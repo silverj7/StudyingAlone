@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 import styled from '@emotion/styled';
 
 interface ToDoListType {
-  id: String;
+  id: string;
   toDoItem: string;
   checked: boolean;
 }
