@@ -42,6 +42,12 @@ const ToDoListComponent = (props: ToDoListType) => {
     );
   };
 
+  const onRemove = (e: any) => {
+    console.log(e.target, ' <<<< e.target');
+    console.log(e.target.id, ' <<<< e.id');
+    setToDoList(toDoList.filter((item) => item.id !== e.target.id));
+  };
+
   return (
     <ToDoListStyled>
       <div className="title">To Do List</div>
@@ -72,8 +78,21 @@ const ToDoListComponent = (props: ToDoListType) => {
             />
             <label htmlFor={`listCheck` + index}>
               <div className="list-item-wrap">
-                <em className="checkBox" />
-                <div className="list-item">{item.toDoItem}</div>
+                <div className="list-item-inner">
+                  <em className="checkBox" />
+                  <div className="list-item">{item.toDoItem}</div>
+                </div>
+
+                <div className="remove-btn">
+                  <button
+                    id={`listCheck` + index}
+                    onClick={(e: any) => {
+                      onRemove(e);
+                    }}
+                  >
+                    X
+                  </button>
+                </div>
               </div>
             </label>
           </div>
@@ -96,6 +115,17 @@ export const ToDoListStyled = styled.div`
   background: #c7bbff;
   border-radius: 20px;
   color: #fff;
+
+  button {
+    background: inherit;
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+    padding: 0;
+    color: #fff;
+    overflow: visible;
+    cursor: pointer;
+  }
 
   .title {
     font-size: 30px;
@@ -133,6 +163,17 @@ export const ToDoListStyled = styled.div`
   .list-check-wrap {
     width: 100%;
     padding: 0 40px;
+
+    .remove-btn {
+      display: inline-block;
+      font-size: 12px;
+      line-height: 12px;
+      padding: 2px 4px;
+      margin: 2px;
+      border: solid 1px #616bff;
+      border-radius: 4px;
+      background: #616bff;
+    }
   }
 
   .list-check {
@@ -187,11 +228,18 @@ export const ToDoListStyled = styled.div`
   .list-item-wrap {
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    width: 100%;
 
-    .list-item {
-      font-size: 16px;
-      line-height: 16px;
-      margin-left: 5px;
+    .list-item-inner {
+      display: flex;
+      align-items: center;
+
+      .list-item {
+        font-size: 16px;
+        line-height: 16px;
+        margin-left: 5px;
+      }
     }
   }
 `;
