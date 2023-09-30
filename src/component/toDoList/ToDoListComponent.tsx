@@ -11,11 +11,11 @@ const ToDoListComponent = (props: ToDoListType) => {
   const [textValue, setTextValue] = useState('');
   const [toDoList, setToDoList] = useState<ToDoListType[]>([]);
 
-  const onChange = (list: string) => {
-    if (list === '') {
+  const onChange = (listItem: string) => {
+    if (listItem === '') {
       return;
     }
-    setTextValue(list);
+    setTextValue(listItem);
   };
 
   const onAdd = (e: any) => {
@@ -43,8 +43,6 @@ const ToDoListComponent = (props: ToDoListType) => {
   };
 
   const onRemove = (e: any) => {
-    console.log(e.target, ' <<<< e.target');
-    console.log(e.target.id, ' <<<< e.id');
     setToDoList(toDoList.filter((item) => item.id !== e.target.id));
   };
 
