@@ -1,14 +1,14 @@
 import dynamic from 'next/dynamic';
 
-const ToDoListComponent = dynamic<any>(
-  () => import('component/toDoList/ToDoListComponent'),
+const ToDoListClassImportComponent = dynamic<any>(
+  () => import('component/toDoList/ToDoListClassImportComponent'),
   {
     ssr: false,
   },
 );
 
 const ToDoList = () => {
-  return <ToDoListComponent />;
+  return <ToDoListClassImportComponent />;
 };
 
 export default ToDoList;

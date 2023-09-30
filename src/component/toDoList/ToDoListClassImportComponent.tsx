@@ -1,5 +1,5 @@
+import React, { useCallback, useState } from 'react';
 import styled from '@emotion/styled';
-import React from 'react';
 
 interface ToDoListType {
   id: string;
@@ -7,40 +7,31 @@ interface ToDoListType {
   checked: boolean;
 }
 
-class ToDoListClassComponent extends React.Component<any, any> {
-  constructor(props: ToDoListType) {
-    super(props);
-    this.state = {
-      text: '',
-      toDoList: [],
-    };
-  }
+const ToDoListClassImportComponent = (props: ToDoListType) => {
+  const [textValue, setTextValue] = useState('');
+  const [toDoList, setToDoList] = useState<ToDoListType[]>([]);
 
-  onChange = (e: any) => {
-    if (e.target.value === '') {
+  const onChange = (listItem: string) => {
+    if (listItem === '') {
       return;
     }
-
-    this.setState({
-      text: e.target.value,
-    });
+    setTextValue(listItem);
   };
 
-  onAdd = () => {
+  const onAdd = (e: any) => {
     const todo = {
-      id: 'listCheck' + this.state.toDoList.length,
-      toDoItem: this.state.text,
+      id: 'listCheck' + toDoList.length,
+      toDoItem: textValue,
+      checked: false,
     };
 
-    this.setState({
-      input: '',
-      toDoList: this.state.toDoList.concat(todo),
-    });
+    setToDoList(toDoList.concat(todo));
+    setTextValue('');
   };
 
-  onToggle = (e: any) => {
-    this.setState(
-      this.state.toDoList.map((item: ToDoListType) =>
+  const onToggle = (e: any) => {
+    setToDoList(
+      toDoList.map((item) =>
         item.id === e.currentTarget.id
           ? {
               ...item,
@@ -51,72 +42,65 @@ class ToDoListClassComponent extends React.Component<any, any> {
     );
   };
 
-  onRemove = (e: any) => {
-    this.setState({
-      toDoList: this.state.toDoList.filter(
-        (item: ToDoListType) => item.id !== e.target.id,
-      ),
-    });
+  const onRemove = (e: any) => {
+    setToDoList(toDoList.filter((item) => item.id !== e.target.id));
   };
 
-  render() {
-    return (
-      <ToDoListStyled>
-        <div className="title">To Do List</div>
-        <div className="input-box">
-          <input
-            type="text"
-            name="toDoItem"
-            value={this.state.toDoItem}
-            onChange={(e: any) => this.onChange(e)}
-            placeholder="To Do List를 입력해주세요"
-          />
-          <button className="input-btn" onClick={(e: any) => this.onAdd()}>
-            +
-          </button>
-        </div>
+  return (
+    <ToDoListStyled>
+      <div className="title">To Do List</div>
+      <div className="input-box">
+        <input
+          type="text"
+          value={textValue}
+          onChange={(e: any) => onChange(e.target.value)}
+          placeholder="To Do List를 입력해주세요"
+        />
+        <button className="input-btn" onClick={(e: any) => onAdd(e)}>
+          +
+        </button>
+      </div>
 
-        <div className="list-check-wrap">
-          {this.state.toDoList.map((item: ToDoListType, index: number) => (
-            <div key={index} className="list-check">
-              <input
-                className="check_box"
-                type="checkbox"
-                id={`listCheck` + index}
-                name={`listCheck` + index}
-                checked={item.checked}
-                onChange={(e: any) => {
-                  this.onToggle(e);
-                }}
-              />
-              <label htmlFor={`listCheck` + index}>
-                <div className="list-item-wrap">
-                  <div className="list-item-inner">
-                    <em className="checkBox" />
-                    <div className="list-item">{item.toDoItem}</div>
-                  </div>
-
-                  <div className="remove-btn">
-                    <button
-                      id={`listCheck` + index}
-                      onClick={(e: any) => {
-                        this.onRemove(e);
-                      }}
-                    >
-                      X
-                    </button>
-                  </div>
+      <div className="list-check-wrap">
+        {toDoList.map((item, index) => (
+          <div key={index} className="list-check">
+            <input
+              className="check_box"
+              type="checkbox"
+              id={`listCheck` + index}
+              name={`listCheck` + index}
+              checked={item.checked}
+              onChange={(e: any) => {
+                onToggle(e);
+              }}
+            />
+            <label htmlFor={`listCheck` + index}>
+              <div className="list-item-wrap">
+                <div className="list-item-inner">
+                  <em className="checkBox" />
+                  <div className="list-item">{item.toDoItem}</div>
                 </div>
-              </label>
-            </div>
-          ))}
-        </div>
-      </ToDoListStyled>
-    );
-  }
-}
 
-export default ToDoListClassComponent;
+                <div className="remove-btn">
+                  <button
+                    id={`listCheck` + index}
+                    onClick={(e: any) => {
+                      onRemove(e);
+                    }}
+                  >
+                    X
+                  </button>
+                </div>
+              </div>
+            </label>
+          </div>
+        ))}
+      </div>
+    </ToDoListStyled>
+  );
+};
+
+export default ToDoListClassImportComponent;
 
 export const ToDoListStyled = styled.div`
   display: flex;
