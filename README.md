@@ -32,3 +32,17 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+===================================================================================================================================
+
+## ToDoList 만들기
+
+의의 : react에서 Class Component vs Function Component 의 차이점을 알아봄으로써 Class를 더 알아가기
+
+- 기본적인 기능 구현
+  - ListItem 추가 (onAdd)
+  - ListItem 체크 (onToggle)
+  - ListItem 삭제 (onRemove)
+
+
+    
