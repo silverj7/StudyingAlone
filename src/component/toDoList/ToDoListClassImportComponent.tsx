@@ -1,5 +1,6 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import styled from '@emotion/styled';
+import { Todo, toDoManager } from 'models/toDo';
 
 interface ToDoListType {
   id: string;
@@ -8,61 +9,61 @@ interface ToDoListType {
 }
 
 const ToDoListClassImportComponent = (props: ToDoListType) => {
-  const [textValue, setTextValue] = useState('');
-  const [toDoList, setToDoList] = useState<ToDoListType[]>([]);
+  // const [textValue, setTextValue] = useState('');
+  // const [toDoList, setToDoList] = useState<ToDoListType[]>([]);
 
-  const onChange = (listItem: string) => {
-    if (listItem === '') {
-      return;
-    }
-    setTextValue(listItem);
-  };
+  const toDoManager = new Todo();
 
-  const onAdd = (e: any) => {
-    const todo = {
-      id: 'listCheck' + toDoList.length,
-      toDoItem: textValue,
-      checked: false,
-    };
+  // const onChange = (listItem: string) => {
+  //   if (listItem === '') {
+  //     return;
+  //   }
+  //   setTextValue(listItem);
+  // };
 
-    setToDoList(toDoList.concat(todo));
-    setTextValue('');
-  };
+  // const onAdd = (e: any) => {
+  //   const todo = {
+  //     id: 'listCheck' + toDoList.length,
+  //     toDoItem: textValue,
+  //     checked: false,
+  //   };
 
-  const onToggle = (e: any) => {
-    setToDoList(
-      toDoList.map((item) =>
-        item.id === e.currentTarget.id
-          ? {
-              ...item,
-              checked: e.currentTarget.checked,
-            }
-          : item,
-      ),
-    );
-  };
+  //   setToDoList(toDoList.concat(todo));
+  //   setTextValue('');
+  // };
 
-  const onRemove = (e: any) => {
-    setToDoList(toDoList.filter((item) => item.id !== e.target.id));
-  };
+  // const onToggle = (e: any) => {
+  //   setToDoList(
+  //     toDoList.map((item) =>
+  //       item.id === e.currentTarget.id
+  //         ? {
+  //             ...item,
+  //             checked: e.currentTarget.checked,
+  //           }
+  //         : item,
+  //     ),
+  //   );
+  // };
+
+  // const onRemove = (e: any) => {
+  //   setToDoList(toDoList.filter((item) => item.id !== e.target.id));
+  // };
 
   return (
     <ToDoListStyled>
       <div className="title">To Do List</div>
       <div className="input-box">
-        <input
-          type="text"
-          value={textValue}
-          onChange={(e: any) => onChange(e.target.value)}
-          placeholder="To Do List를 입력해주세요"
-        />
-        <button className="input-btn" onClick={(e: any) => onAdd(e)}>
+        <input type="text" placeholder="To Do List를 입력해주세요" />
+        <button
+          className="input-btn"
+          onClick={(e: any) => toDoManager.addItem(e.target.value)}
+        >
           +
         </button>
       </div>
 
       <div className="list-check-wrap">
-        {toDoList.map((item, index) => (
+        {toDoManager.getItems().map((item, index) => (
           <div key={index} className="list-check">
             <input
               className="check_box"
@@ -71,7 +72,7 @@ const ToDoListClassImportComponent = (props: ToDoListType) => {
               name={`listCheck` + index}
               checked={item.checked}
               onChange={(e: any) => {
-                onToggle(e);
+                toDoManager.changeItemCheck();
               }}
             />
             <label htmlFor={`listCheck` + index}>
@@ -85,7 +86,7 @@ const ToDoListClassImportComponent = (props: ToDoListType) => {
                   <button
                     id={`listCheck` + index}
                     onClick={(e: any) => {
-                      onRemove(e);
+                      toDoManager.removeItem(e);
                     }}
                   >
                     X

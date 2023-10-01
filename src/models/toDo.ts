@@ -4,19 +4,10 @@ interface ToDoListType {
   checked: boolean;
 }
 
-class Todo {
+export class Todo {
   id: string;
   toDoItem: string;
   checked: boolean;
-
-  constructor(id: string, toDoItem: string, checked: boolean) {
-    this.id = '';
-    this.toDoItem = '';
-    this.checked = false;
-  }
-}
-
-class TodoManager {
   todos: ToDoListType[] = [
     {
       id: '',
@@ -25,25 +16,39 @@ class TodoManager {
     },
   ];
 
+  public constructor() {
+    this.id = '';
+    this.toDoItem = '';
+    this.checked = false;
+    this.todos = [
+      {
+        id: this.id,
+        toDoItem: this.toDoItem,
+        checked: this.checked,
+      },
+    ];
+  }
+
+  changeItemCheck() {
+    this.checked = !this.checked;
+  }
+
+  setItem(toDoItem: string) {
+    this.toDoItem = toDoItem;
+  }
+
   getItems() {
     return this.todos;
   }
 
-  addItem(id: number, toDoItem: string) {
-    const item = new Todo('listCheck' + id++, toDoItem, false);
-
-    this.todos.push(item);
+  getItemsLength() {
+    return this.todos.length;
   }
 
-  changeItemCheck(e: any) {
-    return this.todos.map((item: ToDoListType) =>
-      item.id === e.currentTarget.id
-        ? {
-            ...item,
-            checked: e.currentTarget.checked,
-          }
-        : item,
-    );
+  addItem(toDoItem: string) {
+    const item = new Todo();
+
+    this.todos.push(item);
   }
 
   removeItem(e: any) {
@@ -51,8 +56,46 @@ class TodoManager {
   }
 }
 
-const toDoManager = new TodoManager();
+// export const toDoManager = new Todo();
 
-// toDoManager.addItem(0, '', false);
+// export const toDoManager: ToDoListType[] = [];
 
-export default Todo;
+// export const toDoManager = new Todo();
+
+// export default class TodoManager {
+//   todos: ToDoListType[] = [
+//     {
+//       id: '',
+//       toDoItem: '',
+//       checked: false,
+//     },
+//   ];
+//
+//   getItems() {
+//     return this.todos;
+//   }
+
+// getItemsLength() {
+//   return this.todos.length;
+// }
+
+// changeItemCheck() {
+//  this.checked = !this.checked;
+// }
+
+// setItem(toDoItem: string) {
+//   this.todos.push(new Todo('listCheck' + this.getItemsLength(), toDoItem));
+// }
+
+//addItem(toDoItem: string) {
+//  const item = new Todo('listCheck' + this.getItemsLength(), toDoItem);
+//
+//  this.todos.push(item);
+//}
+
+// removeItem(e: any) {
+//   return this.todos.filter((item: ToDoListType) => item.id !== e.target.id);
+// }
+// }
+
+// export const toDoManager = new TodoManager();
