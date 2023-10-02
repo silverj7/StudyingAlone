@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
-import { Todo, toDoManager } from 'models/toDo';
+import TodoManager, { Todo } from 'models/toDo';
 
 interface ToDoListType {
   id: string;
@@ -12,7 +12,8 @@ const ToDoListClassImportComponent = (props: ToDoListType) => {
   // const [textValue, setTextValue] = useState('');
   // const [toDoList, setToDoList] = useState<ToDoListType[]>([]);
 
-  const toDoManager = new Todo();
+  // const toDo = new Todo();
+  const toDoManager = new TodoManager();
 
   // const onChange = (listItem: string) => {
   //   if (listItem === '') {
@@ -49,6 +50,8 @@ const ToDoListClassImportComponent = (props: ToDoListType) => {
   //   setToDoList(toDoList.filter((item) => item.id !== e.target.id));
   // };
 
+  console.log(toDoManager.getItems(), '<<<< get33');
+
   return (
     <ToDoListStyled>
       <div className="title">To Do List</div>
@@ -56,7 +59,10 @@ const ToDoListClassImportComponent = (props: ToDoListType) => {
         <input type="text" placeholder="To Do List를 입력해주세요" />
         <button
           className="input-btn"
-          onClick={(e: any) => toDoManager.addItem(e.target.value)}
+          onClick={(e: any) => {
+            toDoManager.addItem(e.target.value);
+            console.log(e, 'value');
+          }}
         >
           +
         </button>
@@ -71,9 +77,9 @@ const ToDoListClassImportComponent = (props: ToDoListType) => {
               id={`listCheck` + index}
               name={`listCheck` + index}
               checked={item.checked}
-              onChange={(e: any) => {
-                toDoManager.changeItemCheck();
-              }}
+              // onChange={(e: any) => {
+              //   toDoManager.changeItemCheck();
+              // }}
             />
             <label htmlFor={`listCheck` + index}>
               <div className="list-item-wrap">
