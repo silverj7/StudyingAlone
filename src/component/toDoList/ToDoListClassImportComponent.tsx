@@ -50,8 +50,6 @@ const ToDoListClassImportComponent = (props: ToDoListType) => {
   //   setToDoList(toDoList.filter((item) => item.id !== e.target.id));
   // };
 
-  console.log(toDoManager.getItems(), '<<<< get33');
-
   return (
     <ToDoListStyled>
       <div className="title">To Do List</div>
@@ -61,7 +59,6 @@ const ToDoListClassImportComponent = (props: ToDoListType) => {
           className="input-btn"
           onClick={(e: any) => {
             toDoManager.addItem(e.target.value);
-            console.log(e, 'value');
           }}
         >
           +
