@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import TodoManager, { Todo } from 'models/toDo';
 
@@ -8,57 +8,38 @@ interface ToDoListType {
   checked: boolean;
 }
 
-const ToDoListClassImportComponent = (props: ToDoListType) => {
-  // const [textValue, setTextValue] = useState('');
-  // const [toDoList, setToDoList] = useState<ToDoListType[]>([]);
+const ToDoListClassImportComponent = () => {
+  const [textValue, setTextValue] = useState('');
+  const [toDoList, setToDoList] = useState<Todo[]>([]);
+  const [toDoManager, setToDoManager] = useState<TodoManager>(
+    new TodoManager(),
+  );
 
-  // const toDo = new Todo();
-  const toDoManager = new TodoManager();
+  useEffect(() => {
+    setToDoList(toDoManager.getItems());
+  }, []);
 
-  // const onChange = (listItem: string) => {
-  //   if (listItem === '') {
-  //     return;
-  //   }
-  //   setTextValue(listItem);
-  // };
-
-  // const onAdd = (e: any) => {
-  //   const todo = {
-  //     id: 'listCheck' + toDoList.length,
-  //     toDoItem: textValue,
-  //     checked: false,
-  //   };
-
-  //   setToDoList(toDoList.concat(todo));
-  //   setTextValue('');
-  // };
-
-  // const onToggle = (e: any) => {
-  //   setToDoList(
-  //     toDoList.map((item) =>
-  //       item.id === e.currentTarget.id
-  //         ? {
-  //             ...item,
-  //             checked: e.currentTarget.checked,
-  //           }
-  //         : item,
-  //     ),
-  //   );
-  // };
-
-  // const onRemove = (e: any) => {
-  //   setToDoList(toDoList.filter((item) => item.id !== e.target.id));
-  // };
-
+  console.log('test2', toDoList);
   return (
     <ToDoListStyled>
       <div className="title">To Do List</div>
       <div className="input-box">
-        <input type="text" placeholder="To Do List를 입력해주세요" />
+        <input
+          type="text"
+          placeholder="To Do List를 입력해주세요"
+          onChange={(e: any) => {
+            setTextValue(e.target.value);
+          }}
+        />
         <button
           className="input-btn"
           onClick={(e: any) => {
-            toDoManager.addItem(e.target.value);
+            e.preventDefault();
+            toDoManager.addItem(textValue);
+
+            const items = toDoManager.getItems();
+
+            setToDoList([...items]);
           }}
         >
           +
@@ -66,30 +47,31 @@ const ToDoListClassImportComponent = (props: ToDoListType) => {
       </div>
 
       <div className="list-check-wrap">
-        {toDoManager.getItems().map((item, index) => (
-          <div key={index} className="list-check">
+        {toDoList.map((item, index) => (
+          <div key={item.getId()} className="list-check">
             <input
               className="check_box"
               type="checkbox"
               id={`listCheck` + index}
               name={`listCheck` + index}
-              checked={item.checked}
-              // onChange={(e: any) => {
-              //   toDoManager.changeItemCheck();
-              // }}
+              onChange={(e: any) => {
+                toDoManager.checkItem(item.getId());
+                setToDoList([...toDoManager.getItems()]);
+              }}
             />
             <label htmlFor={`listCheck` + index}>
               <div className="list-item-wrap">
                 <div className="list-item-inner">
                   <em className="checkBox" />
-                  <div className="list-item">{item.toDoItem}</div>
+                  <div className="list-item">{item.getTodoItem()}</div>
                 </div>
 
                 <div className="remove-btn">
                   <button
                     id={`listCheck` + index}
-                    onClick={(e: any) => {
-                      toDoManager.removeItem(e);
+                    onChange={(e: any) => {
+                      toDoManager.removeItem(item.getId());
+                      setToDoList([...toDoManager.getItems()]);
                     }}
                   >
                     X

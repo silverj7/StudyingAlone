@@ -7,11 +7,11 @@ interface ToDoListType {
   checked: boolean;
 }
 
-const ToDoListComponent = (props: ToDoListType) => {
+const ToDoListComponent = () => {
   const [textValue, setTextValue] = useState('');
   const [toDoList, setToDoList] = useState<ToDoListType[]>([]);
 
-  const onChange = (listItem: string) => {
+  const onChangeItem = (listItem: string) => {
     if (listItem === '') {
       return;
     }
@@ -53,7 +53,7 @@ const ToDoListComponent = (props: ToDoListType) => {
         <input
           type="text"
           value={textValue}
-          onChange={(e: any) => onChange(e.target.value)}
+          onChange={(e: any) => onChangeItem(e.target.value)}
           placeholder="To Do List를 입력해주세요"
         />
         <button className="input-btn" onClick={(e: any) => onAdd(e)}>
@@ -69,7 +69,6 @@ const ToDoListComponent = (props: ToDoListType) => {
               type="checkbox"
               id={`listCheck` + index}
               name={`listCheck` + index}
-              checked={item.checked}
               onChange={(e: any) => {
                 onToggle(e);
               }}

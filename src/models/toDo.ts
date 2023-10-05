@@ -1,59 +1,45 @@
-interface ToDoListType {
+interface TodoItemType {
   id: string;
   toDoItem: string;
   checked: boolean;
 }
 
+/**
+ * Todo Item 값 관리
+ */
 export class Todo {
-  id: string;
-  toDoItem: string;
-  checked: boolean;
+  private item: TodoItemType;
 
-  public constructor(id: string, toDoItem: string) {
-    this.id = id;
-    this.toDoItem = toDoItem;
-    this.checked = false;
+  public constructor(id: string, toDoItem: string, checked = false) {
+    this.item = {
+      id,
+      toDoItem,
+      checked,
+    };
   }
 
   changeItemCheck() {
-    this.checked = !this.checked;
+    this.item.checked = !this.item.checked;
   }
 
-  setItem(toDoItem: string) {
-    this.toDoItem = toDoItem;
-  }
+  getId = (): string => {
+    return this.item.id;
+  };
 
-  //   getItems() {
-  //     return this.todos;
-  //   }
-
-  //   getItemsLength() {
-  //     return this.todos.length;
-  //   }
-
-  //addItem(toDoItem: string) {
-  //  const item = new Todo();
-  //
-  //  this.todos.push(item);
-  //}
-
-  //   removeItem(e: any) {
-  //     return this.todos.filter((item: ToDoListType) => item.id !== e.target.id);
-  //   }
+  getTodoItem = (): string => {
+    return this.item.toDoItem;
+  };
 }
 
-// export const toDoManager = new Todo();
-
+/**
+ * Todo List 관리
+ */
 export default class TodoManager {
-  todos: ToDoListType[] = [
-    {
-      id: '',
-      toDoItem: '',
-      checked: false,
-    },
-  ];
+  private todos: Todo[] = [];
 
-  getItems() {
+  constructor() {}
+
+  getItems(): Todo[] {
     return this.todos;
   }
 
@@ -61,23 +47,22 @@ export default class TodoManager {
     return this.todos.length;
   }
 
-  // changeItemCheck() {
-  //  this.checked = !this.checked;
-  // }
-
-  // setItem(toDoItem: string) {
-  //   this.todos.push(new Todo('listCheck' + this.getItemsLength(), toDoItem));
-  // }
-
   addItem(toDoItem: string) {
-    const item = new Todo('listCheck' + this.getItemsLength(), toDoItem);
+    const item = new Todo('listCheck' + Date.now(), toDoItem);
 
-    console.log(item, '<<<< Hi');
     this.todos.push(item);
   }
 
-  removeItem(e: any) {
-    return this.todos.filter((item: ToDoListType) => item.id !== e.target.id);
+  checkItem(id: string) {
+    this.todos.forEach((c) => {
+      if (c.getId() === id) {
+        c.changeItemCheck();
+      }
+    });
+  }
+
+  removeItem(id: string) {
+    return this.todos.filter((item: Todo) => item.getId() !== id);
   }
 }
 

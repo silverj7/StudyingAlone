@@ -84,7 +84,6 @@ class ToDoListClassComponent extends React.Component<any, any> {
                 type="checkbox"
                 id={`listCheck` + index}
                 name={`listCheck` + index}
-                checked={item.checked}
                 onChange={(e: any) => {
                   this.onToggle(e);
                 }}
