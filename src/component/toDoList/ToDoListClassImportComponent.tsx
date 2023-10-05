@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import TodoManager, { Todo } from 'models/toDo';
+import TodoManager, { Todo } from '../../models/toDo';
 
 interface ToDoListType {
   id: string;
@@ -19,7 +19,6 @@ const ToDoListClassImportComponent = () => {
     setToDoList(toDoManager.getItems());
   }, []);
 
-  console.log('test2', toDoList);
   return (
     <ToDoListStyled>
       <div className="title">To Do List</div>
@@ -69,7 +68,7 @@ const ToDoListClassImportComponent = () => {
                 <div className="remove-btn">
                   <button
                     id={`listCheck` + index}
-                    onChange={(e: any) => {
+                    onClick={(e: any) => {
                       toDoManager.removeItem(item.getId());
                       setToDoList([...toDoManager.getItems()]);
                     }}
