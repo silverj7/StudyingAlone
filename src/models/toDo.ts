@@ -43,10 +43,6 @@ export default class TodoManager {
     return this.todos;
   }
 
-  getItemsLength() {
-    return this.todos.length;
-  }
-
   addItem(toDoItem: string) {
     const item = new Todo('listCheck' + Date.now(), toDoItem);
 
