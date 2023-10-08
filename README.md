@@ -8,15 +8,15 @@
   - ListItem 삭제 (onRemove) - 리스트에서 삭제 
     
 - Class 구현
-    -List / Item 관리 따로
+    - List / Item 관리 따로
     - Todo class에 item
     - TodoManager에 List
     - TodoManager의 addItem함수에 Todo class의 인스턴스를 생성하여 사용함
 
 - Todo 
-    -changeItemCheck  : user가 누른 item의 check상태값 바꿔주는 역할
-    -getId            : [v]나 [x]버튼이 눌렸을때 눌린 item의 id를 반환하는 역할
-    -getTodoItem      : user가 추가한 item을 반환하는 역할
+    - changeItemCheck  : user가 누른 item의 check상태값 바꿔주는 역할
+    - getId            : [v]나 [x]버튼이 눌렸을때 눌린 item의 id를 반환하는 역할
+    - getTodoItem      : user가 추가한 item을 반환하는 역할
 
 - TodoManager
     - getItems        : user가 추가한 List를 가져오는 역할
