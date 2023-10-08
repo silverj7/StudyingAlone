@@ -1,47 +1,36 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-
-
 ## ToDoList 만들기
 
-의의 : react에서 Class Component vs Function Component 의 차이점을 알아봄으로써 Class를 더 알아가기
+[Class 알아가기]
 
-- 기본적인 기능 구현
-  - ListItem 추가 (onAdd)
-  - ListItem 체크 (onToggle)
-  - ListItem 삭제 (onRemove)
-
-
+- 구현하려는 기본적인 기능 
+  - ListItem 추가 (onAdd)    - 리스트에 추가 
+  - ListItem 체크 (onToggle) - 할 일을 마무리 하면 체크로 완료
+  - ListItem 삭제 (onRemove) - 리스트에서 삭제 
     
+- Class 구현
+    -List / Item 관리 따로
+    - Todo class에 item
+    - TodoManager에 List
+    - TodoManager의 addItem함수에 Todo class의 인스턴스를 생성하여 사용함
+
+- Todo 
+    -changeItemCheck  : user가 누른 item의 check상태값 바꿔주는 역할
+    -getId            : [v]나 [x]버튼이 눌렸을때 눌린 item의 id를 반환하는 역할
+    -getTodoItem      : user가 추가한 item을 반환하는 역할
+
+- TodoManager
+    - getItems        : user가 추가한 List를 가져오는 역할
+    - addItem         : user가 [+] 버튼 입력시 List에 추가하는 역할
+    - checkItem       : user가 할 일을 마무리 했을 시 완료된 아이템을 체크해주는 역할
+    - removeItem      : List에서 [X] 버튼 눌러진 아이템 삭제하는 역할
+
+- [ToDoListClassImportComponent.tsx]
+   - 사용하는 상태값
+      - textValue, toDoList, toDoManager
+        - textValue   : 유저의 입력 상태값을 위함
+        - toDoList    : List의 상태를 Update 시켜주기위해
+        - toDoManager : TodoManager class의 인스턴스를 생성하고, 함수들을 호출할 때 마다 class를 새로 만들지 않게하기 위해
+  
+   - class는 옵저빙이 안되기 때문에 사용하는 component에서 set을 해줘야함
+   - [+]버튼 클릭시 addItem -> getItems -> setToDoList 순으로 List의 상태를 Update시켜줌
+  
