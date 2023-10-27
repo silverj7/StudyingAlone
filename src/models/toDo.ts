@@ -1,7 +1,12 @@
+import { LocalHospital } from '@mui/icons-material';
+
 interface TodoItemType {
-  id: string;
-  toDoItem: string;
+  id: number;
   checked: boolean;
+  title: string;
+  description: string;
+  startDate: Date;
+  endDate: Date;
 }
 
 /**
@@ -10,24 +15,47 @@ interface TodoItemType {
 export class Todo {
   private item: TodoItemType;
 
-  public constructor(id: string, toDoItem: string, checked = false) {
+  public constructor(
+    id: number,
+    checked: boolean,
+    title: string,
+    description: string,
+    startDate: Date,
+    endDate: Date,
+  ) {
     this.item = {
       id,
-      toDoItem,
       checked,
+      title,
+      description,
+      startDate,
+      endDate,
     };
   }
+  // +) 제목, 설명, 기간
 
   changeItemCheck() {
     this.item.checked = !this.item.checked;
   }
 
-  getId = (): string => {
+  getId = (): number => {
     return this.item.id;
   };
 
-  getTodoItem = (): string => {
-    return this.item.toDoItem;
+  getTodoItemTitle = (): string => {
+    return this.item.title;
+  };
+
+  getTodoItemDesc = (): string => {
+    return this.item.description;
+  };
+
+  getTodoItemStartDate = (): Date => {
+    return this.item.startDate;
+  };
+
+  getTodoItemEndtDate = (): Date => {
+    return this.item.endDate;
   };
 }
 
@@ -43,13 +71,20 @@ export default class TodoManager {
     return this.todos;
   }
 
-  addItem(toDoItem: string) {
-    const item = new Todo('listCheck' + Date.now(), toDoItem);
+  addItem(title: string, description: string, startDate: Date, endDate: Date) {
+    const item = new Todo(
+      Date.now(),
+      false,
+      title,
+      description,
+      startDate,
+      endDate,
+    );
 
     this.todos.push(item);
   }
 
-  checkItem(id: string) {
+  checkItem(id: number) {
     this.todos.forEach((c) => {
       if (c.getId() === id) {
         c.changeItemCheck();
@@ -57,8 +92,13 @@ export default class TodoManager {
     });
   }
 
-  removeItem(id: string) {
-    return this.todos.filter((item: Todo) => item.getId() !== id);
+  removeItem(id: number) {
+    // 왜 이렇게 따로 해줘야하는지?
+    // (필터 돌린걸 변수로 빼서 그걸 다시 this.todos에 넣어줘야 삭제가 동작하는 이유?)
+    // => 컴포넌트쪽 set이랑은 상관없이 Class 데이터 set을 따로 해줘야 해서
+    // => 근데 왜 Class로 짰을때만...?
+    const item = this.todos.filter((item: Todo) => item.getId() !== id);
+    return (this.todos = item);
   }
 }
 

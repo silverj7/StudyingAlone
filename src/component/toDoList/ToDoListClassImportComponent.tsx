@@ -1,15 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import TodoManager, { Todo } from '../../models/toDo';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
-interface ToDoListType {
-  id: string;
-  toDoItem: string;
-  checked: boolean;
-}
+// interface ToDoListType {
+//   id: string;
+//   toDoItem: string;
+//   checked: boolean;
+// }
 
 const ToDoListClassImportComponent = () => {
-  const [textValue, setTextValue] = useState('');
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [endDate, setEndDate] = useState<Date | null>(null);
   const [toDoList, setToDoList] = useState<Todo[]>([]);
   const [toDoManager, setToDoManager] = useState<TodoManager>(
     new TodoManager(),
@@ -19,30 +24,133 @@ const ToDoListClassImportComponent = () => {
     setToDoList(toDoManager.getItems());
   }, []);
 
+  // 날짜 출력 포맷 변경 함수
+  const dateFormat = (date: any) => {
+    let month = date.getMonth() + 1;
+    let day = date.getDate();
+    let hour = date.getHours();
+    let minute = date.getMinutes();
+    let second = date.getSeconds();
+
+    month = month >= 10 ? month : '0' + month;
+    day = day >= 10 ? day : '0' + day;
+    hour = hour >= 10 ? hour : '0' + hour;
+    minute = minute >= 10 ? minute : '0' + minute;
+    second = second >= 10 ? second : '0' + second;
+
+    return (
+      date.getFullYear() +
+      '-' +
+      month +
+      '-' +
+      day +
+      ' ' +
+      hour +
+      ':' +
+      minute +
+      ':' +
+      second
+    );
+  };
+
+  // ADD 버튼 눌렀을때 함수
+  const onAdd = () => {
+    // 입력한 제목이 없을때
+    if (title === '') {
+      alert('제목을 작성해주세요.');
+      return;
+    }
+
+    // 입력한 내용이 없을때
+    if (description === '') {
+      alert('내용을 작성해주세요.');
+      return;
+    }
+
+    // 선택한 날짜가 없을때
+    if (!startDate || !endDate) {
+      alert('날짜를 설정해주세요.');
+      return;
+    }
+
+    toDoManager.addItem(title, description, startDate, endDate);
+
+    const items = toDoManager.getItems();
+
+    setToDoList([...items]);
+
+    setTitle('');
+    setDescription('');
+  };
+
   return (
     <ToDoListStyled>
       <div className="title">To Do List</div>
       <div className="input-box">
-        <input
-          type="text"
-          placeholder="To Do List를 입력해주세요"
-          onChange={(e: any) => {
-            setTextValue(e.target.value);
-          }}
-        />
-        <button
-          className="input-btn"
-          onClick={(e: any) => {
-            e.preventDefault();
-            toDoManager.addItem(textValue);
-
-            const items = toDoManager.getItems();
-
-            setToDoList([...items]);
-          }}
-        >
-          +
-        </button>
+        <div className="input-item">
+          <div>제목 :</div>
+          <input
+            type="text"
+            value={title}
+            placeholder="To Do List 제목을 입력해주세요"
+            onChange={(e: any) => {
+              setTitle(e.target.value);
+            }}
+          />
+        </div>
+        <div className="input-item">
+          <div>내용 :</div>
+          <input
+            type="text"
+            value={description}
+            placeholder="To Do List 내용을 입력해주세요"
+            onChange={(e: any) => {
+              setDescription(e.target.value);
+            }}
+          />
+        </div>
+        <div className="input-item">
+          <div>시작 날 :</div>
+          <DatePicker
+            selected={startDate}
+            onChange={(date) => setStartDate(date)}
+            selectsStart
+            startDate={startDate}
+            endDate={endDate}
+            dateFormat="yyyy.MM.dd(eee)"
+            showTimeSelect={false}
+            timeFormat="HH:mm"
+            locale="ko"
+            placeholderText="Weeks start on Monday"
+          />
+        </div>
+        <div className="input-item">
+          <div>끝나는 날 :</div>
+          <DatePicker
+            selected={endDate}
+            onChange={(date) => setEndDate(date)}
+            selectsEnd
+            startDate={startDate}
+            endDate={endDate}
+            minDate={startDate}
+            dateFormat="yyyy.MM.dd(eee)"
+            showTimeSelect={false}
+            timeFormat="HH:mm"
+            locale="ko"
+            placeholderText="Weeks start on Monday"
+          />
+        </div>
+        <div className="add-btn-wrap">
+          <button
+            className="add-btn"
+            onClick={(e: any) => {
+              e.preventDefault();
+              onAdd();
+            }}
+          >
+            ADD
+          </button>
+        </div>
       </div>
 
       <div className="list-check-wrap">
@@ -62,7 +170,21 @@ const ToDoListClassImportComponent = () => {
               <div className="list-item-wrap">
                 <div className="list-item-inner">
                   <em className="checkBox" />
-                  <div className="list-item">{item.getTodoItem()}</div>
+                  <div
+                    className="list-item-title"
+                    style={{ fontWeight: '600', fontSize: '16px' }}
+                  >
+                    {item.getTodoItemTitle()}
+                  </div>
+                  <div className="list-item-desc">
+                    ({item.getTodoItemDesc()})
+                  </div>
+                  <div className="list-item-start">
+                    {dateFormat(item.getTodoItemStartDate())}
+                  </div>
+                  <div className="list-item-end">
+                    {dateFormat(item.getTodoItemEndtDate())}
+                  </div>
                 </div>
 
                 <div className="remove-btn">
@@ -91,7 +213,7 @@ export const ToDoListStyled = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  width: 400px;
+  width: 800px;
   height: 500px;
   margin: 200px auto;
   text-align: center;
@@ -118,9 +240,23 @@ export const ToDoListStyled = styled.div`
   }
 
   .input-box {
+    display: flex;
+    flex-direction: column;
+    row-gap: 5px;
+    width: 100%;
     margin: 25px 0;
+    padding: 0 20px;
+
+    .input-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
 
     input {
+      width: 100%;
+      max-width: 220px;
+      min-width: 220px;
       padding: 10px;
       color: #000;
       border: solid 1px #fff;
@@ -132,9 +268,14 @@ export const ToDoListStyled = styled.div`
       }
     }
 
-    .input-btn {
-      min-width: 50px;
-      margin-left: 5px;
+    .add-btn-wrap {
+      text-align: right;
+    }
+
+    .add-btn {
+      margin-top: 10px;
+      min-width: 70px;
+      max-width: 70px;
       padding: 10px;
       color: #fff;
       border: solid 1px #616bff;
@@ -145,7 +286,7 @@ export const ToDoListStyled = styled.div`
 
   .list-check-wrap {
     width: 100%;
-    padding: 0 40px;
+    padding: 0 20px;
 
     .remove-btn {
       display: inline-block;
@@ -185,6 +326,7 @@ export const ToDoListStyled = styled.div`
           .checkBox {
             display: inline-block;
             width: 15px;
+            min-width: 15px;
             height: 15px;
             background-color: #fff;
             border-radius: 2px;
@@ -217,6 +359,7 @@ export const ToDoListStyled = styled.div`
     .list-item-inner {
       display: flex;
       align-items: center;
+      column-gap: 10px;
 
       .list-item {
         font-size: 16px;
@@ -225,4 +368,19 @@ export const ToDoListStyled = styled.div`
       }
     }
   }
+`;
+
+const StyledDatePicker = styled(DatePicker)`
+  width: 122px;
+  height: 48px;
+  border: none;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 100%;
+  padding: 20px;
+  background-color: transparent;
+  color: #707070;
+  position: absolute;
+  top: -48px;
+  left: 5px;
 `;
