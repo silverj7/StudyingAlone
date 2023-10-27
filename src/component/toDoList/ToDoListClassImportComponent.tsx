@@ -4,12 +4,6 @@ import TodoManager, { Todo } from '../../models/toDo';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
-// interface ToDoListType {
-//   id: string;
-//   toDoItem: string;
-//   checked: boolean;
-// }
-
 const ToDoListClassImportComponent = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
