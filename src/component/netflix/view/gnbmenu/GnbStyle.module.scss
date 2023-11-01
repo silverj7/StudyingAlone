@@ -15,6 +15,7 @@
     transparent
   );
   transition: background-color ease-in 0.4s;
+  z-index: 10;
 
   @media (max-width: 949px) {
     height: 41px;

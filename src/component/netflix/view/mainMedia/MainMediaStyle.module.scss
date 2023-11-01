@@ -1,14 +1,53 @@
 @import '../../../../config/_mixin.module.scss';
 
 .wrapper {
+  position: relative;
   color: #fff;
+  z-index: 9;
 }
 
-.ImgWrapper {
-  height: 56vh;
+.mainImgWrapper {
+  height: 52vw;
 
-  & img {
+  .mainImg {
+    display: block;
     margin: 0 auto;
-    max-width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
   }
 }
+
+.playDescWrap {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  column-gap: 10px;  
+  top: 50%;
+  left: 3%;
+
+  button {
+    display: block;
+    // width: 120px;
+    height: 56px;
+    padding: 0.6rem;
+    border: none;
+    border-radius: 6px;
+  }
+
+  .playBtn {
+    font-size: 1.4rem;
+    color:#000;
+    background-color: #fff;
+  }
+  
+  .descBtn{
+    font-size: 1.4rem;
+    color: white;
+    background-color: rgba(109, 109, 110, 0.7);
+  }
+}
+
+
+
