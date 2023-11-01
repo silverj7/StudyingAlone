@@ -1,0 +1,14 @@
+@import '../../../../config/_mixin.module.scss';
+
+.wrapper {
+  color: #fff;
+}
+
+.ImgWrapper {
+  height: 56vh;
+
+  & img {
+    margin: 0 auto;
+    max-width: 100%;
+  }
+}
