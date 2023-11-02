@@ -1,5 +1,3 @@
-import { LocalHospital } from '@mui/icons-material';
-
 interface TodoItemType {
   id: number;
   checked: boolean;
