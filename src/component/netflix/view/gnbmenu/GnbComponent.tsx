@@ -41,7 +41,7 @@ const GnbComponent = (props: GnbPropsType) => {
       <nav className={GnbStyle.nav}>
         <img
           className={GnbStyle.logo}
-          src="/images/logo/n_logo.png"
+          src="/images/netflix/logo/n_logo.png"
           alt="logo"
         />
         <div>

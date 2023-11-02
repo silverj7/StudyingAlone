@@ -4,10 +4,12 @@
   position: relative;
   color: #fff;
   z-index: 9;
+  word-break: keep-all;
 }
 
+// 배경 이미지 영역
 .mainImgWrapper {
-  height: 52vw;
+  height: 56vw;
 
   .mainImg {
     display: block;
@@ -19,35 +21,104 @@
   }
 }
 
-.playDescWrap {
+// 제목, 부제목, 설명 영역
+.mainDescWrapper {
   position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   display: flex;
-  align-items: center;
-  column-gap: 10px;  
-  top: 50%;
-  left: 3%;
+  flex-direction: column;
+  row-gap: 15px;
 
-  button {
-    display: block;
-    // width: 120px;
-    height: 56px;
-    padding: 0.6rem;
+  .mainDescInner {
+    position: absolute;
+    bottom: 35%;
+    left: 3.5%;
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+
+    // 제목
+    .mainTitWrap {
+      img {
+        max-width: 100%;
+      }
+    }
+
+    // 부제목
+    .mainSubTitWrap {
+      display: flex;
+      align-items: center;
+      column-gap: 5px;
+
+      .mainSubTit {
+        font-size: 1.4rem;
+        line-height: 1.4rem;
+
+        @media (max-width: 768px) {
+          font-size: 1rem;
+          line-height: 1rem;
+        }
+      }
+
+      // 부제목 - top10 img
+      .mainTop10Icon {
+        width: 36px;
+
+        @media (max-width: 768px) {
+          width: 20px;
+        }
+      }
+    }
+
+    // 설명
+    .mainDescWrap {
+      font-size: 1.2vw;
+      line-height: 1.5vw;
+    }
+  }
+
+  // 버튼 영역
+  .playDescWrap {
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+
+    @media (max-width: 768px) {
+      column-gap: 5px;
+    }
+  }
+
+  .playBtn,
+  .descBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 0.5rem;
+    padding: 0.6rem 1rem;
     border: none;
     border-radius: 6px;
+    font-size: 1.2vw;
+    line-height: 2rem;
   }
 
   .playBtn {
-    font-size: 1.4rem;
-    color:#000;
+    color: #000;
     background-color: #fff;
   }
-  
-  .descBtn{
-    font-size: 1.4rem;
-    color: white;
+
+  .descBtn {
+    color: #fff;
     background-color: rgba(109, 109, 110, 0.7);
   }
+
+  // 버튼이미지
+  .playBtnImg,
+  .descBtnImg {
+    @media (max-width: 768px) {
+      width: 16px;
+    }
+  }
 }
-
-
-
