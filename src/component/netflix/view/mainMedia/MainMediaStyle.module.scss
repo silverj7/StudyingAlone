@@ -2,13 +2,20 @@
 
 .wrapper {
   position: relative;
+  top: 0;
+  left: 0;
+  padding-bottom: 40%;
   color: #fff;
-  z-index: 9;
   word-break: keep-all;
+  z-index: 9;
 }
 
 // 배경 이미지 영역
 .mainImgWrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
   height: 56vw;
 
   .mainImg {
@@ -31,31 +38,34 @@
   display: flex;
   flex-direction: column;
   row-gap: 15px;
+  z-index: 9;
 
   .mainDescInner {
     position: absolute;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
+    justify-content: center;
     top: 0;
-    bottom: 35%;
-    left: 3.5%;
+    bottom: 30%;
+    left: 60px;
     width: 50%;
-    row-gap: 15px;
+    row-gap: 10px;
 
     @media (max-width: 768px) {
+      left: 4%;
       row-gap: 5px;
       justify-content: inherit;
     }
 
-  .mainDescBox {
-    width: 100%;
-    height: 100%;
-  }
+    .mainDescBox {
+      width: 100%;
+      height: 100%;
+    }
 
     // 제목
     .mainTitWrap {
       img {
+        height: 13.2vw;
         max-width: 100%;
       }
     }
@@ -78,7 +88,7 @@
 
       // 부제목 - top10 img
       .mainTop10Icon {
-        width: 36px;
+        width: 33px;
 
         @media (max-width: 768px) {
           width: 4vw;
@@ -116,7 +126,7 @@
     column-gap: 10px;
     padding: 10px 15px;
     font-size: 16px;
-    line-height: 2rem;
+    line-height: 1.6rem;
     border: none;
     border-radius: 6px;
 
@@ -144,9 +154,48 @@
   .descBtnImg {
     width: 1.5rem;
 
-
     @media (max-width: 768px) {
       width: 2.5vw;
     }
   }
+}
+
+.mainMediaDim {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 26.09%;
+  width: 100%;
+  height: 56vw;
+  transition: opacity 0.5s;
+  background: linear-gradient(77deg, rgba(0, 0, 0, 0.6), transparent 85%);
+  opacity: 1;
+  z-index: 8;
+}
+
+// dim 처리
+.mainDim {
+  position: absolute;
+  top: auto;
+  bottom: -40%;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 14.7vw;
+  background-color: transparent;
+  background-image: linear-gradient(
+    180deg,
+    hsla(0, 0%, 8%, 0) 0,
+    hsla(0, 0%, 8%, 0.15) 15%,
+    hsla(0, 0%, 8%, 0.35) 29%,
+    hsla(0, 0%, 8%, 0.58) 44%,
+    #141414 68%,
+    #141414
+  );
+  background-position: 0 top;
+  background-repeat: repeat-x;
+  background-size: 100% 100%;
+  opacity: 1;
+  z-index: 8;
 }

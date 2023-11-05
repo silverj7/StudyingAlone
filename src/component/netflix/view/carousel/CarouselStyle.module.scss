@@ -1,47 +1,106 @@
-.wrapper {
+.itemWrapper {
   position: relative;
   overflow: hidden;
   scroll-behavior: smooth;
-  transition: transform .54s cubic-bezier(.5,0,.1,1) 0s;
-    
-  .swiperWrapper {
-    transition: transform .54s cubic-bezier(.5,0,.1,1) 0s;
+  z-index: 11;
+  margin: 3vw 0;
 
-    > div {
-    transition: transform .54s cubic-bezier(.5,0,.1,1) 0s;
+  .itemTitle {
+    display: inline-block;
+    margin-left: 60px;
+    color: #e5e5e5;
+    margin: 0 60px 15px;
+    font-size: 1.4vw;
+    font-weight: 500;
+    line-height: 1.6vw;
+    color: #fff;
+
+    @media (max-width: 768px) {
+      margin: 0 4% 5px;
+    }
+  }
+
+  .itemInner {
+    height: 100%;
+
+    .swiperWrapper {
+      padding-left: 60px;
+
+      @media (max-width: 768px) {
+        padding-left: 4%;
+      }
+
+      > div {
+        transition-timing-function: cubic-bezier(0.5, 0, 0.1, 1) !important;
+      }
     }
 
     img {
       max-width: 100%;
       border-radius: 5px;
+
+      @media (max-width: 500px) {
+        border-radius: 0;
+      }
+    }
+
+    .arrowLeft,
+    .arrowRight {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 60px;
+      height: 100%;
+      opacity: 0;
+      background: hsla(0, 0%, 8%, 0.5);
+
+      @media (max-width: 1400px) {
+        width: 4%;
+      }
+
+      @media (max-width: 768px) {
+        width: 5.4%;
+      }
+
+      &:hover {
+        opacity: 1;
+        background: hsla(0, 0%, 8%, 0.7);
+      }
+    }
+
+    .arrowLeftImg,
+    .arrowRightImg {
+      max-width: 20px;
+
+      @media (max-width: 500px) {
+        max-width: 10px;
+      }
+    }
+
+    .arrowLeft {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      border-radius: 0 4px 4px 0;
+      transform: translateY(-50%);
+      z-index: 10;
+
+      @media (max-width: 500px) {
+        border-radius: 0;
+      }
+    }
+
+    .arrowRight {
+      position: absolute;
+      top: 50%;
+      right: 0;
+      border-radius: 4px 0 0 4px;
+      transform: translateY(-50%);
+      z-index: 10;
+
+      @media (max-width: 500px) {
+        border-radius: 0;
+      }
     }
   }
-
-  //.arrowLeft,.arrowRight {
-  //  width: 60px;
-  //  height: 100%;
-  //  background: hsla(0,0%,8%,.5);
-  //  border: none;
-
-  //    &:hover {
-  //      background: hsla(0,0%,8%,.7);
-  //    }
-  //}
-
-  //.arrowLeft {
-  //  position: absolute;
-  //  top: 50%;
-  //  left: 0;
-  //  transform: translateY(-50%);
-  //  z-index: 10;
-  //}
-
-  //.arrowRight {
-  //  position: absolute;
-  //  top: 50%;
-  //  right: 0;
-  //  transform: translateY(-50%);
-  //  z-index: 10;
-  //}
-   
 }

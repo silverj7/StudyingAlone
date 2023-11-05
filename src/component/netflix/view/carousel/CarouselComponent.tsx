@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import CarouselStyle from './CarouselStyle.module.scss';
-import { Navigation, Pagination } from 'swiper/modules';
+import CarouselTitleComponent from './CarouselTitleComponent';
+import { Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import SwiperCore from 'swiper';
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -47,48 +48,94 @@ const CarouselMenu: CarouselType[] = [
   { title: '혼례대첩', imgSrc: 'images/netflix/carousel/img12.webp' },
 ];
 
-interface CarouselProp {}
+interface CarouselProp {
+  title: string; // Carousel 재사용을 위한 title props
+}
 
 const CarouselComponent = (props: CarouselProp) => {
+  const { title } = props;
+  const navigationPrevRef = useRef<HTMLDivElement>(null);
+  const navigationNextRef = useRef(null);
+  const [realIndex, setRealIndex] = useState(0);
+
+  useEffect(() => {
+    if (!navigationPrevRef.current) return;
+
+    if (realIndex === 0) {
+      navigationPrevRef.current.style.display = 'none';
+    } else {
+      navigationPrevRef.current.style.display = 'flex';
+    }
+  }, [realIndex]);
+
   return (
-    <div>
-      <div>한국이 만든 콘텐츠</div>
-      <div className={CarouselStyle.wrapper}>
+    <div className={CarouselStyle.itemWrapper}>
+      <CarouselTitleComponent title={title} />
+      <div className={CarouselStyle.itemInner}>
         <Swiper
           modules={[Navigation]}
           className={CarouselStyle.swiperWrapper}
-          navigation
           rewind={true}
-          spaceBetween={8}
-          slidesPerView={2.5}
-          slidesOffsetBefore={60}
-          slidesOffsetAfter={60}
+          spaceBetween={4}
+          slidesPerView={2.15}
           slidesPerGroup={6}
-          // navigation={{
-          //  nextEl: '.swiper-button-next',
-          // prevEl: '.swiper-button-prev',
-          // }}
+          speed={1500}
+          allowTouchMove={false}
+          onActiveIndexChange={(swiper) => {
+            setRealIndex(swiper.realIndex);
+          }}
+          navigation={{
+            prevEl: navigationPrevRef.current,
+            nextEl: navigationNextRef.current,
+          }}
           breakpoints={{
             1400: {
-              slidesPerView: 6.5,
+              spaceBetween: 8,
+              slidesPerView: 6.25,
             },
             1100: {
-              slidesPerView: 4.5,
+              spaceBetween: 6,
+              slidesPerView: 5.25,
             },
             800: {
-              slidesPerView: 3.5,
+              spaceBetween: 4,
+              slidesPerView: 4.2,
             },
             500: {
-              slidesPerView: 2.5,
+              spaceBetween: 4,
+              slidesPerView: 3.2,
             },
           }}
         >
+          <>
+            <div ref={navigationPrevRef} className={CarouselStyle.arrowLeft}>
+              <FaChevronLeft
+                className={CarouselStyle.arrowLeftImg}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  margin: '0 auto',
+                  color: '#fff',
+                }}
+              />
+            </div>
+            <div ref={navigationNextRef} className={CarouselStyle.arrowRight}>
+              <FaChevronRight
+                className={CarouselStyle.arrowRightImg}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  margin: '0 auto',
+                  color: '#fff',
+                }}
+              />
+            </div>
+          </>
           {CarouselMenu.map((item: any, index: number) => {
             return (
               <SwiperSlide>
                 <img
                   key={`itemBox` + index}
-                  // className={CarouselStyle.itemImg}
                   src={item.imgSrc}
                   alt={item.title}
                 />
