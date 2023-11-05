@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import GnbComponent from './view/gnbmenu/GnbComponent';
 import MainVideoComponent from './view/mainMedia/MainMediaComponent';
 import NetFlixStyle from './NetFlixStyle.module.scss';
+import CarouselComponent from './view/carousel/CarouselComponent';
 
 type Props = {};
 
@@ -33,6 +34,7 @@ const NetFlixComponent = (props: Props) => {
     <div className={NetFlixStyle.wrapper}>
       <GnbComponent isScroll={isScroll} />
       <MainVideoComponent />
+      <CarouselComponent />
     </div>
   );
 };

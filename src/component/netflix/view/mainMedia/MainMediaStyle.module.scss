@@ -34,11 +34,24 @@
 
   .mainDescInner {
     position: absolute;
-    bottom: 35%;
-    left: 3.5%;
     display: flex;
     flex-direction: column;
-    row-gap: 10px;
+    justify-content: flex-end;
+    top: 0;
+    bottom: 35%;
+    left: 3.5%;
+    width: 50%;
+    row-gap: 15px;
+
+    @media (max-width: 768px) {
+      row-gap: 5px;
+      justify-content: inherit;
+    }
+
+  .mainDescBox {
+    width: 100%;
+    height: 100%;
+  }
 
     // 제목
     .mainTitWrap {
@@ -54,12 +67,12 @@
       column-gap: 5px;
 
       .mainSubTit {
-        font-size: 1.4rem;
-        line-height: 1.4rem;
+        font-size: 1.7vw;
+        line-height: 1.7vw;
 
         @media (max-width: 768px) {
-          font-size: 1rem;
-          line-height: 1rem;
+          font-size: 2vw;
+          line-height: 1.5vw;
         }
       }
 
@@ -68,7 +81,7 @@
         width: 36px;
 
         @media (max-width: 768px) {
-          width: 20px;
+          width: 4vw;
         }
       }
     }
@@ -77,6 +90,10 @@
     .mainDescWrap {
       font-size: 1.2vw;
       line-height: 1.5vw;
+
+      @media (max-width: 768px) {
+        margin-top: 5px;
+      }
     }
   }
 
@@ -96,12 +113,20 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    column-gap: 0.5rem;
-    padding: 0.6rem 1rem;
+    column-gap: 10px;
+    padding: 10px 15px;
+    font-size: 16px;
+    line-height: 2rem;
     border: none;
     border-radius: 6px;
-    font-size: 1.2vw;
-    line-height: 2rem;
+
+    @media (max-width: 768px) {
+      column-gap: 5px;
+      font-size: 1.6vw;
+      line-height: 0;
+      padding: 5px;
+      border-radius: 3px;
+    }
   }
 
   .playBtn {
@@ -117,8 +142,11 @@
   // 버튼이미지
   .playBtnImg,
   .descBtnImg {
+    width: 1.5rem;
+
+
     @media (max-width: 768px) {
-      width: 16px;
+      width: 2.5vw;
     }
   }
 }

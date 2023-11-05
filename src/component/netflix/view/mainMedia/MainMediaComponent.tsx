@@ -70,32 +70,32 @@ const MainMediaComponent = (props: Props) => {
 
             {/* 설명 */}
             <div className={MainMediaStyle.mainDescWrap}>
-              브루클린에서 버섯 왕국으로 마법처럼 순간 이동하게 된 용감한 두명의
-              배관공. <br />
-              공주와 함께 힘을 모아 불을 내뿜는 폭군 거북이에 맞서 싸운다.
+              두 명의 멍청한 사교계 여성들을 경호하는 임무를 받은 두 흑인 FBI
+              요원은 납치범들을 저지하기 위해 파티를 좋아하는 백인 여성들로
+              변장한다.
             </div>
-          </div>
 
-          {/* 버튼 영역 */}
-          <div className={MainMediaStyle.playDescWrap}>
-            <button onClick={() => {}} className={MainMediaStyle.playBtn}>
-              <img
-                className={MainMediaStyle.playBtnImg}
-                src="/images/netflix/main/playBtn.svg"
-                alt="play"
-              />
-              <div>재생</div>
-            </button>
-            <button onClick={() => {}} className={MainMediaStyle.descBtn}>
-              <img
-                className={MainMediaStyle.descBtnImg}
-                src="/images/netflix/main/info.svg"
-                alt="info"
-              />
-              <div>상세 정보</div>
-            </button>
+            {/* 버튼 영역 */}
+            <div className={MainMediaStyle.playDescWrap}>
+              <button onClick={() => {}} className={MainMediaStyle.playBtn}>
+                <img
+                  className={MainMediaStyle.playBtnImg}
+                  src="/images/netflix/main/playBtn.svg"
+                  alt="play"
+                />
+                <div>재생</div>
+              </button>
+              <button onClick={() => {}} className={MainMediaStyle.descBtn}>
+                <img
+                  className={MainMediaStyle.descBtnImg}
+                  src="/images/netflix/main/info.svg"
+                  alt="info"
+                />
+                <div>상세 정보</div>
+              </button>
+            </div>
+            {/* 버튼 영역 */}
           </div>
-          {/* 버튼 영역 */}
         </div>
       </div>
     </div>

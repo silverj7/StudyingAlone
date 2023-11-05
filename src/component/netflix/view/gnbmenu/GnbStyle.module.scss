@@ -5,7 +5,7 @@
   position: fixed;
   width: 100%;
   height: 68px;
-  padding: 0 4%;
+  padding: 0 3%;
   color: #e5e5e5;
   word-break: keep-all;
   background-color: transparent;
@@ -51,8 +51,8 @@
   display: flex;
   height: 100%;
   column-gap: 20px;
-  font-size: 1.2rem;
-  line-height: 1.2rem;
+  font-size: 1rem;
+  line-height: 1rem;
 
   @media (max-width: 1200px) {
     font-size: 0.8rem;

@@ -1,0 +1,47 @@
+.wrapper {
+  position: relative;
+  overflow: hidden;
+  scroll-behavior: smooth;
+  transition: transform .54s cubic-bezier(.5,0,.1,1) 0s;
+    
+  .swiperWrapper {
+    transition: transform .54s cubic-bezier(.5,0,.1,1) 0s;
+
+    > div {
+    transition: transform .54s cubic-bezier(.5,0,.1,1) 0s;
+    }
+
+    img {
+      max-width: 100%;
+      border-radius: 5px;
+    }
+  }
+
+  //.arrowLeft,.arrowRight {
+  //  width: 60px;
+  //  height: 100%;
+  //  background: hsla(0,0%,8%,.5);
+  //  border: none;
+
+  //    &:hover {
+  //      background: hsla(0,0%,8%,.7);
+  //    }
+  //}
+
+  //.arrowLeft {
+  //  position: absolute;
+  //  top: 50%;
+  //  left: 0;
+  //  transform: translateY(-50%);
+  //  z-index: 10;
+  //}
+
+  //.arrowRight {
+  //  position: absolute;
+  //  top: 50%;
+  //  right: 0;
+  //  transform: translateY(-50%);
+  //  z-index: 10;
+  //}
+   
+}
