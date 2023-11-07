@@ -85,9 +85,14 @@ const ToDoListClassImportComponent = () => {
       return;
     }
 
+    setTitle(title);
+    setDescription(description);
+    setStartDate(startDate);
+    setEndDate(endDate);
+
     toDoManager.setItem(123, false, title, description, startDate, endDate);
 
-    setToDoList([...toDoManager.getItems()]);
+    // setToDoList([...toDoManager.getItems()]);
     setIsEdit(false);
   };
 
@@ -151,7 +156,7 @@ const ToDoListClassImportComponent = () => {
         <div className="btn-wrap">
           {isEdit && (
             <button
-              className="modify-btn"
+              className="modify-fin-btn"
               onClick={(e: any) => {
                 e.preventDefault();
                 onModify();
@@ -210,7 +215,7 @@ const ToDoListClassImportComponent = () => {
                     </div>
                   </div>
 
-                  <div>
+                  <div className="item-btn-wrap">
                     <div className="modify-btn">
                       <button
                         id={`listCheck` + index}
@@ -321,32 +326,34 @@ export const ToDoListStyled = styled.div<ToDoListStyledProps>`
       align-items: center;
       justify-content: flex-end;
       margin-top: 15px;
-    }
 
-    .modify-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-right: 5px;
-      padding: 10px;
-      color: #fff;
-      border: solid 1px #616bff;
-      border-radius: 8px;
-      background: #616bff;
-    }
+      .modify-fin-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        max-width: 68px;
+        min-height: 40px;
+        margin-right: 5px;
+        padding: 5px;
+        color: #fff;
+        border: solid 1px #616bff;
+        border-radius: 8px;
+        background: #616bff;
+      }
 
-    .add-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 68px;
-      min-height: 38px;
-      padding: 10px;
-      color: #fff;
-      border-radius: 8px;
-      border: ${({ isEdit }) => (isEdit ? '#8b8b8b' : 'solid 1px #616bff')};
-      background: ${({ isEdit }) => (isEdit ? '#8b8b8b' : '#616bff')};
-      cursor: ${({ isEdit }) => (isEdit ? 'unset' : 'pointer')};
+      .add-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 68px;
+        min-height: 40px;
+        padding: 10px;
+        color: #fff;
+        border-radius: 8px;
+        border: ${({ isEdit }) => (isEdit ? '#8b8b8b' : 'solid 1px #616bff')};
+        background: ${({ isEdit }) => (isEdit ? '#8b8b8b' : '#616bff')};
+        cursor: ${({ isEdit }) => (isEdit ? 'unset' : 'pointer')};
+      }
     }
   }
 
@@ -354,30 +361,39 @@ export const ToDoListStyled = styled.div<ToDoListStyledProps>`
     width: 100%;
     padding: 0 20px;
 
-    .modify-btn {
-      display: inline-block;
-      min-height: 26px;
-      max-height: 26px;
-      font-size: 12px;
-      line-height: 12px;
-      padding: 4px 6px;
-      margin: 2px;
-      border: solid 1px #616bff;
-      border-radius: 4px;
-      background: #616bff;
-    }
+    .item-btn-wrap {
+      display: flex;
+      align-items: center;
 
-    .remove-btn {
-      display: inline-block;
-      min-height: 26px;
-      max-height: 26px;
-      font-size: 12px;
-      line-height: 12px;
-      padding: 4px 6px;
-      margin: 2px;
-      border: solid 1px #616bff;
-      border-radius: 4px;
-      background: #616bff;
+      .modify-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 30px;
+        max-height: 30px;
+        font-size: 12px;
+        line-height: 14px;
+        padding: 4px 6px;
+        margin: 2px;
+        border: solid 1px #616bff;
+        border-radius: 4px;
+        background: #616bff;
+      }
+
+      .remove-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 30px;
+        max-height: 30px;
+        font-size: 12px;
+        line-height: 14px;
+        padding: 4px 6px;
+        margin: 2px;
+        border: solid 1px #616bff;
+        border-radius: 4px;
+        background: #616bff;
+      }
     }
   }
 

@@ -72,7 +72,7 @@ export class Todo {
  */
 export default class TodoManager {
   /**
-   * private으로 선언해서 외부에서 todos에 대한 직접적인 접근을 제어
+   * private으로 선언해서 외부에서 todos(todoListItem)에 대한 직접적인 접근을 제어
    */
   private todos: Todo[] = [];
 
@@ -129,7 +129,7 @@ export default class TodoManager {
   }
 
   /**
-   * todos list(배열)안에서 [수정]버튼이 눌린 item을 수정하는 메서드
+   * todos list(배열)안에서 [수정]버튼이 눌린 item을 찾아 수정하는 메서드
    */
   setItem(
     id: number,
@@ -139,23 +139,27 @@ export default class TodoManager {
     startDate: Date,
     endDate: Date,
   ) {
-    const result = _.transform(
-      this.todos,
-      (result: TodoItemType[], c) => {
-        if (id === c.getId())
-          result.push({
-            ...c,
-            id: id,
-            checked: checked,
-            title: title,
-            description: description,
-            startDate: startDate,
-            endDate: endDate,
-          });
-      },
-      [],
-    );
-    return result;
+    this.todos.forEach((c) => {
+      if (c.getId() === id) {
+        c.changeItemCheck();
+      }
+    });
+
+    // const result: Todo[] = this.todos.map((item: Todo) => {
+    //   return item.getId() === id
+    //     ? {
+    //         id: id,
+    //         checked: checked,
+    //         title: title,
+    //         description: description,
+    //         startDate: startDate,
+    //         endDate: endDate,
+    //         ...item,
+    //       }
+    //     : item;
+    // });
+
+    return (this.todos = result);
   }
 }
 
