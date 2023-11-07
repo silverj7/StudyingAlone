@@ -5,6 +5,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 const ToDoListClassImportComponent = () => {
+  const [isEdit, setIsEdit] = useState(false);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [startDate, setStartDate] = useState<Date | null>(null);
@@ -47,7 +48,7 @@ const ToDoListClassImportComponent = () => {
     );
   };
 
-  // ADD 버튼 눌렀을때 함수
+  // ADD 버튼 눌렀을때 작동하는 함수
   const onAdd = () => {
     // 입력한 제목이 없을때
     if (title === '') {
@@ -77,12 +78,25 @@ const ToDoListClassImportComponent = () => {
     setDescription('');
   };
 
+  // Modify 버튼 눌렀을때 작동하는 함수
+  const onModify = () => {
+    if (!startDate || !endDate) {
+      alert('날짜를 설정해주세요.');
+      return;
+    }
+
+    toDoManager.setItem(123, false, title, description, startDate, endDate);
+
+    setToDoList([...toDoManager.getItems()]);
+    setIsEdit(false);
+  };
+
   return (
-    <ToDoListStyled>
+    <ToDoListStyled isEdit={isEdit}>
       <div className="title">To Do List</div>
       <div className="input-box">
         <div className="input-item">
-          <div>제목 :</div>
+          <div className="input-item-title">제목 :</div>
           <input
             type="text"
             value={title}
@@ -93,7 +107,7 @@ const ToDoListClassImportComponent = () => {
           />
         </div>
         <div className="input-item">
-          <div>내용 :</div>
+          <div className="input-item-title">내용 :</div>
           <input
             type="text"
             value={description}
@@ -104,7 +118,7 @@ const ToDoListClassImportComponent = () => {
           />
         </div>
         <div className="input-item">
-          <div>시작 날 :</div>
+          <div className="input-item-title">시작 날 :</div>
           <DatePicker
             selected={startDate}
             onChange={(date) => setStartDate(date)}
@@ -119,7 +133,7 @@ const ToDoListClassImportComponent = () => {
           />
         </div>
         <div className="input-item">
-          <div>끝나는 날 :</div>
+          <div className="input-item-title">끝나는 날 :</div>
           <DatePicker
             selected={endDate}
             onChange={(date) => setEndDate(date)}
@@ -134,9 +148,22 @@ const ToDoListClassImportComponent = () => {
             placeholderText="Weeks start on Monday"
           />
         </div>
-        <div className="add-btn-wrap">
+        <div className="btn-wrap">
+          {isEdit && (
+            <button
+              className="modify-btn"
+              onClick={(e: any) => {
+                e.preventDefault();
+                onModify();
+              }}
+            >
+              수정완료
+            </button>
+          )}
+
           <button
             className="add-btn"
+            disabled={isEdit}
             onClick={(e: any) => {
               e.preventDefault();
               onAdd();
@@ -147,55 +174,74 @@ const ToDoListClassImportComponent = () => {
         </div>
       </div>
 
+      {/* TodolistItem */}
       <div className="list-check-wrap">
-        {toDoList.map((item, index) => (
-          <div key={item.getId()} className="list-check">
-            <input
-              className="check_box"
-              type="checkbox"
-              id={`listCheck` + index}
-              name={`listCheck` + index}
-              onChange={(e: any) => {
-                toDoManager.checkItem(item.getId());
-                setToDoList([...toDoManager.getItems()]);
-              }}
-            />
-            <label htmlFor={`listCheck` + index}>
-              <div className="list-item-wrap">
-                <div className="list-item-inner">
-                  <em className="checkBox" />
-                  <div
-                    className="list-item-title"
-                    style={{ fontWeight: '600', fontSize: '16px' }}
-                  >
-                    {item.getTodoItemTitle()}
+        {toDoList.map((item, index) => {
+          return (
+            <div key={item.getId()} className="list-check">
+              <input
+                className="check_box"
+                type="checkbox"
+                id={`listCheck` + index}
+                name={`listCheck` + index}
+                onChange={(e: any) => {
+                  toDoManager.checkItem(item.getId());
+                  setToDoList([...toDoManager.getItems()]);
+                }}
+              />
+              <label htmlFor={`listCheck` + index}>
+                <div className="list-item-wrap">
+                  <div className="list-item-inner">
+                    <em className="checkBox" />
+                    <div
+                      className="list-item-title"
+                      style={{ fontWeight: '600', fontSize: '16px' }}
+                    >
+                      {item.getItem().title}
+                    </div>
+                    <div className="list-item-desc">
+                      ({item.getItem().description})
+                    </div>
+                    <div className="list-item-start">
+                      {dateFormat(item.getItem().startDate)}
+                    </div>
+                    <div className="list-item-end">
+                      {dateFormat(item.getItem().endDate)}
+                    </div>
                   </div>
-                  <div className="list-item-desc">
-                    ({item.getTodoItemDesc()})
-                  </div>
-                  <div className="list-item-start">
-                    {dateFormat(item.getTodoItemStartDate())}
-                  </div>
-                  <div className="list-item-end">
-                    {dateFormat(item.getTodoItemEndtDate())}
-                  </div>
-                </div>
 
-                <div className="remove-btn">
-                  <button
-                    id={`listCheck` + index}
-                    onClick={(e: any) => {
-                      toDoManager.removeItem(item.getId());
-                      setToDoList([...toDoManager.getItems()]);
-                    }}
-                  >
-                    X
-                  </button>
+                  <div>
+                    <div className="modify-btn">
+                      <button
+                        id={`listCheck` + index}
+                        onClick={(e: any) => {
+                          setIsEdit((prev) => !prev);
+                          setTitle(item.getItem().title);
+                          setDescription(item.getItem().description);
+                          setStartDate(item.getItem().startDate);
+                          setEndDate(item.getItem().endDate);
+                        }}
+                      >
+                        수정
+                      </button>
+                    </div>
+                    <div className="remove-btn">
+                      <button
+                        id={`listCheck` + index}
+                        onClick={(e: any) => {
+                          toDoManager.removeItem(item.getId());
+                          setToDoList([...toDoManager.getItems()]);
+                        }}
+                      >
+                        X
+                      </button>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </label>
-          </div>
-        ))}
+              </label>
+            </div>
+          );
+        })}
       </div>
     </ToDoListStyled>
   );
@@ -203,7 +249,11 @@ const ToDoListClassImportComponent = () => {
 
 export default ToDoListClassImportComponent;
 
-export const ToDoListStyled = styled.div`
+interface ToDoListStyledProps {
+  isEdit: boolean;
+}
+
+export const ToDoListStyled = styled.div<ToDoListStyledProps>`
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -244,7 +294,11 @@ export const ToDoListStyled = styled.div`
     .input-item {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+    }
+
+    .input-item-title {
+      text-align: left;
+      min-width: 100px;
     }
 
     input {
@@ -262,19 +316,37 @@ export const ToDoListStyled = styled.div`
       }
     }
 
-    .add-btn-wrap {
-      text-align: right;
+    .btn-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      margin-top: 15px;
     }
 
-    .add-btn {
-      margin-top: 10px;
-      min-width: 70px;
-      max-width: 70px;
+    .modify-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 5px;
       padding: 10px;
       color: #fff;
       border: solid 1px #616bff;
       border-radius: 8px;
       background: #616bff;
+    }
+
+    .add-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 68px;
+      min-height: 38px;
+      padding: 10px;
+      color: #fff;
+      border-radius: 8px;
+      border: ${({ isEdit }) => (isEdit ? '#8b8b8b' : 'solid 1px #616bff')};
+      background: ${({ isEdit }) => (isEdit ? '#8b8b8b' : '#616bff')};
+      cursor: ${({ isEdit }) => (isEdit ? 'unset' : 'pointer')};
     }
   }
 
@@ -282,11 +354,26 @@ export const ToDoListStyled = styled.div`
     width: 100%;
     padding: 0 20px;
 
-    .remove-btn {
+    .modify-btn {
       display: inline-block;
+      min-height: 26px;
+      max-height: 26px;
       font-size: 12px;
       line-height: 12px;
-      padding: 2px 4px;
+      padding: 4px 6px;
+      margin: 2px;
+      border: solid 1px #616bff;
+      border-radius: 4px;
+      background: #616bff;
+    }
+
+    .remove-btn {
+      display: inline-block;
+      min-height: 26px;
+      max-height: 26px;
+      font-size: 12px;
+      line-height: 12px;
+      padding: 4px 6px;
       margin: 2px;
       border: solid 1px #616bff;
       border-radius: 4px;
@@ -364,17 +451,17 @@ export const ToDoListStyled = styled.div`
   }
 `;
 
-const StyledDatePicker = styled(DatePicker)`
-  width: 122px;
-  height: 48px;
-  border: none;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 100%;
-  padding: 20px;
-  background-color: transparent;
-  color: #707070;
-  position: absolute;
-  top: -48px;
-  left: 5px;
-`;
+// const StyledDatePicker = styled(DatePicker)`
+//   width: 122px;
+//   height: 48px;
+//   border: none;
+//   font-weight: 400;
+//   font-size: 16px;
+//   line-height: 100%;
+//   padding: 20px;
+//   background-color: transparent;
+//   color: #707070;
+//   position: absolute;
+//   top: -48px;
+//   left: 5px;
+// `;
