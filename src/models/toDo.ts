@@ -139,27 +139,22 @@ export default class TodoManager {
     startDate: Date,
     endDate: Date,
   ) {
-    this.todos.forEach((c) => {
-      if (c.getId() === id) {
-        c.changeItemCheck();
-      }
+    const result = this.todos.map((item: Todo) => {
+      return item.getId() === id
+        ? {
+            id: id,
+            checked: checked,
+            title: title,
+            description: description,
+            startDate: startDate,
+            endDate: endDate,
+            ...item,
+          }
+        : item;
     });
 
-    // const result: Todo[] = this.todos.map((item: Todo) => {
-    //   return item.getId() === id
-    //     ? {
-    //         id: id,
-    //         checked: checked,
-    //         title: title,
-    //         description: description,
-    //         startDate: startDate,
-    //         endDate: endDate,
-    //         ...item,
-    //       }
-    //     : item;
-    // });
-
-    return (this.todos = result);
+    // setItem 해주는걸 분리(todos에 집어넣는 함수를 따로 빼기)
+    // return (this.todos[id].setitem() = result);
   }
 }
 
