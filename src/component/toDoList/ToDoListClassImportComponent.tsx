@@ -20,15 +20,10 @@ const ToDoListClassImportComponent = () => {
     setToDoList(toDoManager.getItems());
   }, []);
 
-  console.log(toDoList, '<<<< toDoList');
-
   // 날짜 출력 포맷 변경 함수
   const dateFormat = (date: any) => {
     let month = date.getMonth() + 1;
     let day = date.getDate();
-    let hour = date.getHours();
-    let minute = date.getMinutes();
-    let second = date.getSeconds();
 
     month = month >= 10 ? month : '0' + month;
     day = day >= 10 ? day : '0' + day;
