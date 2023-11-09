@@ -10,18 +10,9 @@ export interface TodoItemType {
 }
 
 /**
- * Todo List 관리
+ * Todo List
  */
 export default class TodoManager {
-  /**
-   * private으로 선언해서 외부에서 todos(todoListItem)에 대한 직접적인 접근을 제어
-   */
-  // id: number;
-  // checked: boolean;
-  // title: string;
-  // description: string;
-  // startDate: Date;
-  // endDate: Date;
   todos: TodoItemType[] = [];
 
   /**
@@ -29,17 +20,6 @@ export default class TodoManager {
    * : 생성자는 선언해두는게 좋으니까(없으면 오류날수있음) 빈 상태로 놔두기
    */
   constructor() {}
-
-  // /**
-  //  * id 얻어 오는 메서드
-  //  */
-  getId = (id: number) => {
-    this.todos.forEach((c) => {
-      if (c.id === id) {
-        return c.id;
-      }
-    });
-  };
 
   /**
    * item 체크 상태 변경 메서드
