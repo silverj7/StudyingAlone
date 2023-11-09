@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import TodoManager, { Todo } from '../../models/toDo';
+import TodoManager, { TodoItemType } from '../../models/toDo';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 const ToDoListClassImportComponent = () => {
   const [isEdit, setIsEdit] = useState(false);
+  const [id, setId] = useState(0);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
-  const [toDoList, setToDoList] = useState<Todo[]>([]);
+  const [toDoList, setToDoList] = useState<TodoItemType[]>([]);
   const [toDoManager, setToDoManager] = useState<TodoManager>(
     new TodoManager(),
   );
@@ -18,6 +19,8 @@ const ToDoListClassImportComponent = () => {
   useEffect(() => {
     setToDoList(toDoManager.getItems());
   }, []);
+
+  console.log(toDoList, '<<<< toDoList');
 
   // 날짜 출력 포맷 변경 함수
   const dateFormat = (date: any) => {
@@ -29,23 +32,8 @@ const ToDoListClassImportComponent = () => {
 
     month = month >= 10 ? month : '0' + month;
     day = day >= 10 ? day : '0' + day;
-    hour = hour >= 10 ? hour : '0' + hour;
-    minute = minute >= 10 ? minute : '0' + minute;
-    second = second >= 10 ? second : '0' + second;
 
-    return (
-      date.getFullYear() +
-      '-' +
-      month +
-      '-' +
-      day +
-      ' ' +
-      hour +
-      ':' +
-      minute +
-      ':' +
-      second
-    );
+    return date.getFullYear() + '-' + month + '-' + day;
   };
 
   // ADD 버튼 눌렀을때 작동하는 함수
@@ -79,7 +67,7 @@ const ToDoListClassImportComponent = () => {
   };
 
   // Modify 버튼 눌렀을때 작동하는 함수
-  const onModify = () => {
+  const onModify = (id: number) => {
     if (!startDate || !endDate) {
       alert('날짜를 설정해주세요.');
       return;
@@ -90,9 +78,8 @@ const ToDoListClassImportComponent = () => {
     setStartDate(startDate);
     setEndDate(endDate);
 
-    toDoManager.setItem(123, false, title, description, startDate, endDate);
+    toDoManager.setItem(id, title, description, startDate, endDate);
 
-    // setToDoList([...toDoManager.getItems()]);
     setIsEdit(false);
   };
 
@@ -159,7 +146,7 @@ const ToDoListClassImportComponent = () => {
               className="modify-fin-btn"
               onClick={(e: any) => {
                 e.preventDefault();
-                onModify();
+                onModify(id);
               }}
             >
               수정완료
@@ -183,14 +170,14 @@ const ToDoListClassImportComponent = () => {
       <div className="list-check-wrap">
         {toDoList.map((item, index) => {
           return (
-            <div key={item.getId()} className="list-check">
+            <div key={item.id} className="list-check">
               <input
                 className="check_box"
                 type="checkbox"
                 id={`listCheck` + index}
                 name={`listCheck` + index}
                 onChange={(e: any) => {
-                  toDoManager.checkItem(item.getId());
+                  toDoManager.changeItemCheck(item.id);
                   setToDoList([...toDoManager.getItems()]);
                 }}
               />
@@ -202,16 +189,14 @@ const ToDoListClassImportComponent = () => {
                       className="list-item-title"
                       style={{ fontWeight: '600', fontSize: '16px' }}
                     >
-                      {item.getItem().title}
+                      {item.title}
                     </div>
-                    <div className="list-item-desc">
-                      ({item.getItem().description})
-                    </div>
+                    <div className="list-item-desc">({item.description})</div>
                     <div className="list-item-start">
-                      {dateFormat(item.getItem().startDate)}
+                      {dateFormat(item.startDate)}
                     </div>
                     <div className="list-item-end">
-                      {dateFormat(item.getItem().endDate)}
+                      {dateFormat(item.endDate)}
                     </div>
                   </div>
 
@@ -221,10 +206,11 @@ const ToDoListClassImportComponent = () => {
                         id={`listCheck` + index}
                         onClick={(e: any) => {
                           setIsEdit(true);
-                          setTitle(item.getItem().title);
-                          setDescription(item.getItem().description);
-                          setStartDate(item.getItem().startDate);
-                          setEndDate(item.getItem().endDate);
+                          setId(item.id);
+                          setTitle(item.title);
+                          setDescription(item.description);
+                          setStartDate(item.startDate);
+                          setEndDate(item.endDate);
                         }}
                       >
                         수정
@@ -234,7 +220,7 @@ const ToDoListClassImportComponent = () => {
                       <button
                         id={`listCheck` + index}
                         onClick={(e: any) => {
-                          toDoManager.removeItem(item.getId());
+                          toDoManager.removeItem(item.id);
                           setToDoList([...toDoManager.getItems()]);
                         }}
                       >
