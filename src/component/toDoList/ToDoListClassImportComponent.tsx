@@ -220,7 +220,7 @@ const ToDoListClassImportComponent = () => {
                       <button
                         id={`listCheck` + index}
                         onClick={(e: any) => {
-                          setIsEdit((prev) => !prev);
+                          setIsEdit(true);
                           setTitle(item.getItem().title);
                           setDescription(item.getItem().description);
                           setStartDate(item.getItem().startDate);
