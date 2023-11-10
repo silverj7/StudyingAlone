@@ -73,7 +73,7 @@ const ToDoListClassImportComponent = () => {
     setStartDate(startDate);
     setEndDate(endDate);
 
-    toDoManager.setItem(id, title, description, startDate, endDate);
+    toDoManager.fetchItem(id, title, description, startDate, endDate);
 
     setIsEdit(false);
   };
