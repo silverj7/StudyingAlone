@@ -21,7 +21,7 @@ const CarouselMenu: CarouselType[] = [
   { title: '국민사형투표', imgSrc: 'images/netflix/carousel/img03.webp' },
   {
     title: '정신병동에도 아침이 와요',
-    imgSrc: 'images/netflix/carousel/img04.jpg',
+    imgSrc: 'images/netflix/carousel/scale_img04.jpg',
   },
   { title: '19/20', imgSrc: 'images/netflix/carousel/img05.jpg' },
   { title: '혜미리예채파', imgSrc: 'images/netflix/carousel/img06.webp' },
@@ -56,7 +56,13 @@ const CarouselComponent = (props: CarouselProp) => {
   const { title } = props;
   const navigationPrevRef = useRef<HTMLDivElement>(null);
   const navigationNextRef = useRef(null);
+  const ImgRef = useRef(null);
   const [realIndex, setRealIndex] = useState(0);
+  const [active, setActive] = useState(false);
+  const [remove, setRemove] = useState(true);
+  const [video, setVideo] = useState(false);
+  const [muted, setMuted] = useState(mutedProp);
+  const [videoSRC, setVideoSRC] = useState('');
 
   useEffect(() => {
     if (!navigationPrevRef.current) return;
@@ -67,6 +73,22 @@ const CarouselComponent = (props: CarouselProp) => {
       navigationPrevRef.current.style.display = 'flex';
     }
   }, [realIndex]);
+
+  const ref = useRef<HTMLDivElement>(null);
+
+  const onMouseEnter = (e: any) => {
+    clearInterval(ImgRef.current);
+    ImgRef.current = setTimeout(() => {
+      setActive(true);
+      setRemove(false);
+      setVideo(true);
+    }, 1000);
+  };
+  const onMouseLeave = (e: any) => {
+    setActive(false);
+    setVideo(false);
+    console.log(e);
+  };
 
   return (
     <div className={CarouselStyle.itemWrapper}>
@@ -133,7 +155,7 @@ const CarouselComponent = (props: CarouselProp) => {
           </>
           {CarouselMenu.map((item: any, index: number) => {
             return (
-              <SwiperSlide>
+              <SwiperSlide ref={ImgRef} className={CarouselStyle.SwiperSlide}>
                 <img
                   key={`itemBox` + index}
                   src={item.imgSrc}

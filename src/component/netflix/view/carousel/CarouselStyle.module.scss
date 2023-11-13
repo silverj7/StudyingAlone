@@ -103,4 +103,13 @@
       }
     }
   }
+
+  .SwiperSlide {
+    padding: 1rem 0;
+
+    &:hover {
+      z-index: 1000;
+      transform: scale(1.2);
+    }
+  }
 }
