@@ -18,10 +18,13 @@ const ToDoListClassImportComponent = () => {
 
   useEffect(() => {
     setToDoList(toDoManager.getItems());
-  }, []);
+    toDoManager.getList();
+  }, [toDoManager]);
 
   // 날짜 출력 포맷 변경 함수
   const dateFormat = (date: any) => {
+    // Mon Nov 13 2023 00:00:00 GMT+0900 (한국 표준시) 이런식으로 넘어와야 함
+
     let month = date.getMonth() + 1;
     let day = date.getDate();
 
