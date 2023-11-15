@@ -57,22 +57,6 @@ export default class TodoManager {
   // }
 
   /**
-   * 로컬스토리지 가져오기
-   */
-  public getList() {
-    if (typeof window !== 'undefined') {
-      const temp: TodoItemType[] = JSON.parse(localStorage.getItem(SAVE_TODOS));
-
-      const returnArr: TodoItemType[] = _.map(temp, (item) => {
-        return item;
-      });
-
-      return returnArr;
-    }
-    return null;
-  }
-
-  /**
    * todos list(배열) 가져오는 메서드
    */
   public getItems(): TodoItemType[] {
