@@ -18,7 +18,7 @@ const ToDoListClassImportComponent = () => {
 
   useEffect(() => {
     setToDoList(toDoManager.getItems());
-    toDoManager.getList();
+    // toDoManager.getList();
   }, [toDoManager]);
 
   // 날짜 출력 포맷 변경 함수
