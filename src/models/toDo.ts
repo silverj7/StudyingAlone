@@ -38,6 +38,13 @@ export default class TodoManager {
     }
   }
 
+  public getList() {
+    if (typeof window !== 'undefined') {
+      return JSON.parse(localStorage.getItem(SAVE_TODOS));
+    }
+    return null;
+  }
+
   /**
    * 로컬스토리지 가져오기
    * 성공했는데 지저분함 (원하는 방향성이 아니기도 함)
