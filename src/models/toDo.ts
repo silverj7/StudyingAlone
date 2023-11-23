@@ -33,35 +33,27 @@ export default class TodoManager {
    * 로컬스토리지 저장
    */
   public setList() {
-    if (typeof window !== 'undefined') {
+    if (this.isWindowCheck()) {
       localStorage.setItem(SAVE_TODOS, JSON.stringify(this.todos));
-    }
+    } else null;
   }
 
+  /**
+   * 로컬스토리지 가져오기
+   */
   public getList() {
-    if (typeof window !== 'undefined') {
+    if (this.isWindowCheck()) {
       return JSON.parse(localStorage.getItem(SAVE_TODOS));
     }
     return null;
   }
 
   /**
-   * 로컬스토리지 가져오기
-   * 성공했는데 지저분함 (원하는 방향성이 아니기도 함)
+   * 윈도우 체크
    */
-  // public getList() {
-  //   if (typeof window !== 'undefined') {
-  //     const temp: TodoItemType[] = JSON.parse(localStorage.getItem(SAVE_TODOS));
-  //     console.log(temp, '<<<< temp');
-
-  //     const returnArr: TodoItemType[] = _.map(temp, (item) => {
-  //       return item;
-  //     });
-
-  //     return returnArr;
-  //   }
-  //   return null;
-  // }
+  public isWindowCheck() {
+    return typeof window !== 'undefined';
+  }
 
   /**
    * todos list(배열) 가져오는 메서드

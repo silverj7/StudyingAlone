@@ -18,20 +18,21 @@ const ToDoListClassImportComponent = () => {
 
   useEffect(() => {
     setToDoList(toDoManager.getItems());
-    // toDoManager.getList();
   }, [toDoManager]);
 
   // 날짜 출력 포맷 변경 함수
   const dateFormat = (date: any) => {
     // Mon Nov 13 2023 00:00:00 GMT+0900 (한국 표준시) 이런식으로 넘어와야 함
 
-    let month = date.getMonth() + 1;
-    let day = date.getDate();
+    // let month = date.getMonth() + 1;
+    // let day = date.getDate();
 
-    month = month >= 10 ? month : '0' + month;
-    day = day >= 10 ? day : '0' + day;
+    // month = month >= 10 ? month : '0' + month;
+    // day = day >= 10 ? day : '0' + day;
 
-    return date.getFullYear() + '-' + month + '-' + day;
+    // return date.getFullYear() + '-' + month + '-' + day;
+
+    return '2023-11-23';
   };
 
   // ADD 버튼 눌렀을때 작동하는 함수
@@ -55,6 +56,7 @@ const ToDoListClassImportComponent = () => {
     }
 
     toDoManager.addItem(title, description, startDate, endDate);
+    // toDoManager.addItem(title, description);
 
     const items = toDoManager.getItems();
 
@@ -73,10 +75,11 @@ const ToDoListClassImportComponent = () => {
 
     setTitle(title);
     setDescription(description);
-    setStartDate(startDate);
-    setEndDate(endDate);
+    // setStartDate(startDate);
+    // setEndDate(endDate);
 
     toDoManager.fetchItem(id, title, description, startDate, endDate);
+    // toDoManager.fetchItem(id, title, description);
 
     setIsEdit(false);
   };
@@ -166,71 +169,72 @@ const ToDoListClassImportComponent = () => {
 
       {/* TodolistItem */}
       <div className="list-check-wrap">
-        {toDoList.map((item, index) => {
-          return (
-            <div key={item.id} className="list-check">
-              <input
-                className="check_box"
-                type="checkbox"
-                id={`listCheck` + index}
-                name={`listCheck` + index}
-                onChange={(e: any) => {
-                  toDoManager.changeItemCheck(item.id);
-                  setToDoList([...toDoManager.getItems()]);
-                }}
-              />
-              <label htmlFor={`listCheck` + index}>
-                <div className="list-item-wrap">
-                  <div className="list-item-inner">
-                    <em className="checkBox" />
-                    <div
-                      className="list-item-title"
-                      style={{ fontWeight: '600', fontSize: '16px' }}
-                    >
-                      {item.title}
+        {toDoList &&
+          toDoList.map((item, index) => {
+            return (
+              <div key={item.id} className="list-check">
+                <input
+                  className="check_box"
+                  type="checkbox"
+                  id={`listCheck` + index}
+                  name={`listCheck` + index}
+                  onChange={(e: any) => {
+                    toDoManager.changeItemCheck(item.id);
+                    setToDoList([...toDoManager.getItems()]);
+                  }}
+                />
+                <label htmlFor={`listCheck` + index}>
+                  <div className="list-item-wrap">
+                    <div className="list-item-inner">
+                      <em className="checkBox" />
+                      <div
+                        className="list-item-title"
+                        style={{ fontWeight: '600', fontSize: '16px' }}
+                      >
+                        {item.title}
+                      </div>
+                      <div className="list-item-desc">({item.description})</div>
+                      <div className="list-item-start">
+                        {/* {dateFormat(item.startDate)} */}
+                      </div>
+                      {/* <div className="list-item-end">
+                        {dateFormat(item.endDate)}
+                      </div> */}
                     </div>
-                    <div className="list-item-desc">({item.description})</div>
-                    <div className="list-item-start">
-                      {dateFormat(item.startDate)}
-                    </div>
-                    <div className="list-item-end">
-                      {dateFormat(item.endDate)}
-                    </div>
-                  </div>
 
-                  <div className="item-btn-wrap">
-                    <div className="modify-btn">
-                      <button
-                        id={`listCheck` + index}
-                        onClick={(e: any) => {
-                          setIsEdit(true);
-                          setId(item.id);
-                          setTitle(item.title);
-                          setDescription(item.description);
-                          setStartDate(item.startDate);
-                          setEndDate(item.endDate);
-                        }}
-                      >
-                        수정
-                      </button>
-                    </div>
-                    <div className="remove-btn">
-                      <button
-                        id={`listCheck` + index}
-                        onClick={(e: any) => {
-                          toDoManager.removeItem(item.id);
-                          setToDoList([...toDoManager.getItems()]);
-                        }}
-                      >
-                        X
-                      </button>
+                    <div className="item-btn-wrap">
+                      <div className="modify-btn">
+                        <button
+                          id={`listCheck` + index}
+                          onClick={(e: any) => {
+                            setIsEdit(true);
+                            setId(item.id);
+                            setTitle(item.title);
+                            setDescription(item.description);
+                            // setStartDate(item.startDate);
+                            // setEndDate(item.endDate);
+                          }}
+                        >
+                          수정
+                        </button>
+                      </div>
+                      <div className="remove-btn">
+                        <button
+                          id={`listCheck` + index}
+                          onClick={(e: any) => {
+                            toDoManager.removeItem(item.id);
+                            setToDoList([...toDoManager.getItems()]);
+                          }}
+                        >
+                          X
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </label>
-            </div>
-          );
-        })}
+                </label>
+              </div>
+            );
+          })}
       </div>
     </ToDoListStyled>
   );
@@ -247,12 +251,20 @@ export const ToDoListStyled = styled.div<ToDoListStyledProps>`
   align-items: center;
   flex-direction: column;
   width: 800px;
-  height: 500px;
+  height: 550px;
+  padding: 10px 0;
   margin: 200px auto;
+  color: #fff;
   text-align: center;
   background: #c7bbff;
   border-radius: 20px;
-  color: #fff;
+  overflow: hidden;
+
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  ::-webkit-scrollbar {
+    display: none;
+  }
 
   button {
     background: inherit;
@@ -344,6 +356,13 @@ export const ToDoListStyled = styled.div<ToDoListStyledProps>`
   .list-check-wrap {
     width: 100%;
     padding: 0 20px;
+    overflow-y: scroll;
+
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+    ::-webkit-scrollbar {
+      display: none;
+    }
 
     .item-btn-wrap {
       display: flex;
@@ -441,6 +460,14 @@ export const ToDoListStyled = styled.div<ToDoListStyledProps>`
       display: flex;
       align-items: center;
       column-gap: 10px;
+
+      .list-item-title,
+      .list-item-desc {
+        max-width: 180px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
 
       .list-item {
         font-size: 16px;
