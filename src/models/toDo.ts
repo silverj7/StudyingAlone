@@ -31,6 +31,13 @@ export default class TodoManager {
   }
 
   /**
+   * 윈도우 체크
+   */
+  public isWindowCheck() {
+    return typeof window !== 'undefined';
+  }
+
+  /**
    * 로컬스토리지 저장
    * (해당 클래스 내에서만 제어하고싶으니까 private)
    */
@@ -41,24 +48,30 @@ export default class TodoManager {
   }
 
   /**
+   * 윈도우 체크
+   */
+  private lengthCheck(): number {
+    const todos = JSON.parse(localStorage.getItem(SAVE_TODOS));
+
+    let length = 0;
+
+    for (let item in todos) {
+      length += todos[item].length;
+    }
+
+    return length;
+  }
+
+  /**
    * 로컬스토리지에 저장된 todoList(todos) 가져오기
    * 초기화 용
    */
   public getListFromLocalStorage() {
     if (this.isWindowCheck()) {
-      const todos = JSON.parse(localStorage.getItem(SAVE_TODOS));
-
-      if (todos.length === 0) {
+      if (this.lengthCheck() === 0) {
         return [];
       } else return JSON.parse(localStorage.getItem(SAVE_TODOS));
     } else [];
-  }
-
-  /**
-   * 윈도우 체크
-   */
-  public isWindowCheck() {
-    return typeof window !== 'undefined';
   }
 
   /**
