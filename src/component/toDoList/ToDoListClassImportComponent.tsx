@@ -9,31 +9,32 @@ const ToDoListClassImportComponent = () => {
   const [id, setId] = useState(0);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+
+  // DatePicker용 Date state
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
+
+  // Convert된 Date state
+  const [convertStartDate, setConvertStartDate] = useState<string>(null);
+  const [convertEndDate, setConvertEndDate] = useState<string>(null);
+
   const [toDoList, setToDoList] = useState<TodoItemType[]>([]);
   const [toDoManager, setToDoManager] = useState<TodoManager>(
     new TodoManager(),
   );
 
   useEffect(() => {
-    setToDoList(toDoManager.getItems());
+    setToDoList(toDoManager.getList());
   }, [toDoManager]);
 
   // 날짜 출력 포맷 변경 함수
-  const dateFormat = (date: any) => {
-    // Mon Nov 13 2023 00:00:00 GMT+0900 (한국 표준시) 이런식으로 넘어와야 함
+  // const dateFormat = (date: any) => {
+  //   const timestamp = new Date(date);
 
-    // let month = date.getMonth() + 1;
-    // let day = date.getDate();
+  //   const dateFormat = timestamp.toLocaleDateString();
 
-    // month = month >= 10 ? month : '0' + month;
-    // day = day >= 10 ? day : '0' + day;
-
-    // return date.getFullYear() + '-' + month + '-' + day;
-
-    return '2023-11-23';
-  };
+  //   return dateFormat;
+  // };
 
   // ADD 버튼 눌렀을때 작동하는 함수
   const onAdd = () => {
@@ -56,9 +57,8 @@ const ToDoListClassImportComponent = () => {
     }
 
     toDoManager.addItem(title, description, startDate, endDate);
-    // toDoManager.addItem(title, description);
 
-    const items = toDoManager.getItems();
+    const items = toDoManager.getList();
 
     setToDoList([...items]);
 
@@ -75,11 +75,16 @@ const ToDoListClassImportComponent = () => {
 
     setTitle(title);
     setDescription(description);
-    // setStartDate(startDate);
-    // setEndDate(endDate);
+    setConvertStartDate(convertStartDate);
+    setConvertEndDate(convertEndDate);
 
-    toDoManager.fetchItem(id, title, description, startDate, endDate);
-    // toDoManager.fetchItem(id, title, description);
+    toDoManager.fetchItem(
+      id,
+      title,
+      description,
+      convertStartDate,
+      convertEndDate,
+    );
 
     setIsEdit(false);
   };
@@ -118,10 +123,7 @@ const ToDoListClassImportComponent = () => {
             selectsStart
             startDate={startDate}
             endDate={endDate}
-            dateFormat="yyyy.MM.dd(eee)"
             showTimeSelect={false}
-            timeFormat="HH:mm"
-            locale="ko"
             placeholderText="Weeks start on Monday"
           />
         </div>
@@ -134,36 +136,46 @@ const ToDoListClassImportComponent = () => {
             startDate={startDate}
             endDate={endDate}
             minDate={startDate}
-            dateFormat="yyyy.MM.dd(eee)"
             showTimeSelect={false}
-            timeFormat="HH:mm"
-            locale="ko"
             placeholderText="Weeks start on Monday"
           />
         </div>
         <div className="btn-wrap">
-          {isEdit && (
-            <button
-              className="modify-fin-btn"
-              onClick={(e: any) => {
-                e.preventDefault();
-                onModify(id);
-              }}
-            >
-              수정완료
-            </button>
-          )}
-
           <button
-            className="add-btn"
+            className="remove-all-btn"
             disabled={isEdit}
             onClick={(e: any) => {
               e.preventDefault();
-              onAdd();
+              toDoManager.removeAllItem();
             }}
           >
-            ADD
+            전체삭제
           </button>
+
+          <div>
+            {isEdit && (
+              <button
+                className="modify-fin-btn"
+                onClick={(e: any) => {
+                  e.preventDefault();
+                  onModify(id);
+                }}
+              >
+                수정완료
+              </button>
+            )}
+
+            <button
+              className="add-btn"
+              disabled={isEdit}
+              onClick={(e: any) => {
+                e.preventDefault();
+                onAdd();
+              }}
+            >
+              ADD
+            </button>
+          </div>
         </div>
       </div>
 
@@ -180,7 +192,7 @@ const ToDoListClassImportComponent = () => {
                   name={`listCheck` + index}
                   onChange={(e: any) => {
                     toDoManager.changeItemCheck(item.id);
-                    setToDoList([...toDoManager.getItems()]);
+                    setToDoList([...toDoManager.getList()]);
                   }}
                 />
                 <label htmlFor={`listCheck` + index}>
@@ -195,11 +207,9 @@ const ToDoListClassImportComponent = () => {
                       </div>
                       <div className="list-item-desc">({item.description})</div>
                       <div className="list-item-start">
-                        {/* {dateFormat(item.startDate)} */}
+                        {item.convertStartDate}
                       </div>
-                      {/* <div className="list-item-end">
-                        {dateFormat(item.endDate)}
-                      </div> */}
+                      <div className="list-item-end">{item.convertEndDate}</div>
                     </div>
 
                     <div className="item-btn-wrap">
@@ -211,8 +221,8 @@ const ToDoListClassImportComponent = () => {
                             setId(item.id);
                             setTitle(item.title);
                             setDescription(item.description);
-                            // setStartDate(item.startDate);
-                            // setEndDate(item.endDate);
+                            setConvertStartDate(item.convertStartDate);
+                            setConvertEndDate(item.convertEndDate);
                           }}
                         >
                           수정
@@ -223,7 +233,7 @@ const ToDoListClassImportComponent = () => {
                           id={`listCheck` + index}
                           onClick={(e: any) => {
                             toDoManager.removeItem(item.id);
-                            setToDoList([...toDoManager.getItems()]);
+                            setToDoList([...toDoManager.getList()]);
                           }}
                         >
                           X
@@ -320,8 +330,14 @@ export const ToDoListStyled = styled.div<ToDoListStyledProps>`
     .btn-wrap {
       display: flex;
       align-items: center;
-      justify-content: flex-end;
+      justify-content: space-between;
       margin-top: 15px;
+
+      > div {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+      }
 
       .modify-fin-btn {
         display: flex;
@@ -349,6 +365,20 @@ export const ToDoListStyled = styled.div<ToDoListStyledProps>`
         border: ${({ isEdit }) => (isEdit ? '#8b8b8b' : 'solid 1px #616bff')};
         background: ${({ isEdit }) => (isEdit ? '#8b8b8b' : '#616bff')};
         cursor: ${({ isEdit }) => (isEdit ? 'unset' : 'pointer')};
+      }
+
+      .remove-all-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 68px;
+        min-height: 40px;
+        padding: 10px;
+        color: #fff;
+        border-radius: 8px;
+        border: solid 1px #616bff;
+        background: #616bff;
+        cursor: pointer;
       }
     }
   }
@@ -477,18 +507,3 @@ export const ToDoListStyled = styled.div<ToDoListStyledProps>`
     }
   }
 `;
-
-// const StyledDatePicker = styled(DatePicker)`
-//   width: 122px;
-//   height: 48px;
-//   border: none;
-//   font-weight: 400;
-//   font-size: 16px;
-//   line-height: 100%;
-//   padding: 20px;
-//   background-color: transparent;
-//   color: #707070;
-//   position: absolute;
-//   top: -48px;
-//   left: 5px;
-// `;
