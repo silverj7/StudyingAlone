@@ -27,16 +27,7 @@ const ToDoListClassImportComponent = () => {
     setToDoList(toDoManager.getList());
   }, [toDoManager]);
 
-  // 날짜 출력 포맷 변경 함수
-  // const dateFormat = (date: any) => {
-  //   const timestamp = new Date(date);
-
-  //   const dateFormat = timestamp.toLocaleDateString();
-
-  //   return dateFormat;
-  // };
-
-  // ADD 버튼 눌렀을때 작동하는 함수
+  // ADD 버튼 눌렀을때 실행되는 함수
   const onAdd = () => {
     // 입력한 제목이 없을때
     if (title === '') {
@@ -66,7 +57,7 @@ const ToDoListClassImportComponent = () => {
     setDescription('');
   };
 
-  // Modify 버튼 눌렀을때 작동하는 함수
+  // Modify 버튼 눌렀을때 실행되는 함수
   const onModify = (id: number) => {
     if (!startDate || !endDate) {
       alert('날짜를 설정해주세요.');
@@ -87,6 +78,15 @@ const ToDoListClassImportComponent = () => {
     );
 
     setIsEdit(false);
+  };
+
+  // '전체삭제' 버튼 눌렀을때 실행되는 함수
+  const onRemoveAll = () => {
+    toDoManager.removeAllItem();
+
+    const items = toDoManager.getList();
+
+    setToDoList([...items]);
   };
 
   return (
@@ -146,7 +146,7 @@ const ToDoListClassImportComponent = () => {
             disabled={isEdit}
             onClick={(e: any) => {
               e.preventDefault();
-              toDoManager.removeAllItem();
+              onRemoveAll();
             }}
           >
             전체삭제

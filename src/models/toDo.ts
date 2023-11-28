@@ -19,21 +19,16 @@ export default class TodoManager {
   todos: TodoItemType[] = [];
 
   /**
-   * 처음에 빈 배열이여야 하니까 초기화 비워둠
-   * : 생성자는 선언해두는게 좋으니까(없으면 오류날수있음) 빈 상태로 놔두기
+   *  로컬스토리지에 있는 데이터로 데이터 초기화
    */
-
-  ////////////////////////////////////////////////////////
-  // TODO: 로컬스토리지나 쿠키 같은걸로 데이터 연결시키기!
-  ////////////////////////////////////////////////////////
   constructor() {
     this.todos = this.getListFromLocalStorage();
   }
 
   /**
-   * 윈도우 체크
+   * 윈도우 체크(로컬스토리지 때문에)
    */
-  public isWindowCheck() {
+  private isWindowCheck() {
     return typeof window !== 'undefined';
   }
 
@@ -94,6 +89,7 @@ export default class TodoManager {
 
   /**
    * todos배열에 item 하나를 추가하는 메서드
+   * 날짜는 'changeDateToLocaleString'함수를 통해 locale format으로 변환해서 저장
    */
   public addItem(
     title: string,
@@ -112,10 +108,6 @@ export default class TodoManager {
       convertStartDate: convertSDate,
       convertEndDate: convertEDate,
     };
-
-    console.log(item, '<<<< item');
-
-    console.log(this.todos, '<<<< this.todos');
 
     this.todos.push(item);
 
@@ -137,12 +129,18 @@ export default class TodoManager {
   /**
    * date Format Convert 메서드
    * Mon Nov 13 2023 00:00:00 GMT+0900 (한국 표준시) <<<< 형식으로 넘어오는 날짜 데이터를
-   * timestamp형식으로 바꾼 후에 Locale(string)형식으로 출력
+   * Locale(string)형식으로 출력
+   * GMT -> UTC -> locale
    */
-  public changeDateToLocaleString(date: Date): string {
-    const timestamp = new Date(date);
+  private changeDateToLocaleString(date: Date): string {
+    // 1. GMT로 생성된 날짜를 UTC(string)로 변환
+    const UTCDate = new Date(date).toUTCString();
 
-    const LocaleDate = timestamp.toLocaleDateString();
+    // 2. 1에서 생성된 UTC(string)을 다시 UTC(Date)로 변환
+    const UTCTemp = new Date(UTCDate);
+
+    // 3. 2에서 생성된 UTC(Date)를 locale(string)으로 변환
+    const LocaleDate = UTCTemp.toLocaleDateString();
 
     return LocaleDate;
   }
