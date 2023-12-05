@@ -14,14 +14,8 @@ const ToDoListClassImportComponent = () => {
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
 
-  // Convert된 Date state
-  const [convertStartDate, setConvertStartDate] = useState<string>(null);
-  const [convertEndDate, setConvertEndDate] = useState<string>(null);
-
   const [toDoList, setToDoList] = useState<TodoItemType[]>([]);
-  const [toDoManager, setToDoManager] = useState<TodoManager>(
-    new TodoManager(),
-  );
+  const [toDoManager] = useState<TodoManager>(new TodoManager());
 
   useEffect(() => {
     setToDoList(toDoManager.getList());
@@ -57,7 +51,7 @@ const ToDoListClassImportComponent = () => {
     setDescription('');
   };
 
-  // Modify 버튼 눌렀을때 실행되는 함수
+  // '수정완료' 버튼 눌렀을때 실행되는 함수
   const onModify = (id: number) => {
     if (!startDate || !endDate) {
       alert('날짜를 설정해주세요.');
@@ -66,18 +60,17 @@ const ToDoListClassImportComponent = () => {
 
     setTitle(title);
     setDescription(description);
-    setConvertStartDate(convertStartDate);
-    setConvertEndDate(convertEndDate);
 
-    toDoManager.fetchItem(
-      id,
-      title,
-      description,
-      convertStartDate,
-      convertEndDate,
-    );
+    const convertSDate = toDoManager.changeDateToLocaleString(startDate);
+    const convertEDate = toDoManager.changeDateToLocaleString(endDate);
+
+    toDoManager.fetchItem(id, title, description, convertSDate, convertEDate);
 
     setIsEdit(false);
+
+    const items = toDoManager.getList();
+
+    setToDoList([...items]);
   };
 
   // '전체삭제' 버튼 눌렀을때 실행되는 함수
@@ -179,6 +172,8 @@ const ToDoListClassImportComponent = () => {
         </div>
       </div>
 
+      <div className="red">* list가 4개 이상일 경우 스크롤 해주세요.</div>
+
       {/* TodolistItem */}
       <div className="list-check-wrap">
         {toDoList &&
@@ -221,8 +216,16 @@ const ToDoListClassImportComponent = () => {
                             setId(item.id);
                             setTitle(item.title);
                             setDescription(item.description);
-                            setConvertStartDate(item.convertStartDate);
-                            setConvertEndDate(item.convertEndDate);
+                            setStartDate(
+                              toDoManager.changeDateToUtcDate(
+                                item.convertStartDate,
+                              ),
+                            );
+                            setEndDate(
+                              toDoManager.changeDateToUtcDate(
+                                item.convertEndDate,
+                              ),
+                            );
                           }}
                         >
                           수정
@@ -276,6 +279,15 @@ export const ToDoListStyled = styled.div<ToDoListStyledProps>`
     display: none;
   }
 
+  .red {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 0 20px;
+    text-align: left;
+    font-size: 12px;
+    color: #ff1616;
+  }
+
   button {
     background: inherit;
     border: none;
@@ -299,7 +311,7 @@ export const ToDoListStyled = styled.div<ToDoListStyledProps>`
     flex-direction: column;
     row-gap: 5px;
     width: 100%;
-    margin: 25px 0;
+    margin: 25px 0 15px;
     padding: 0 20px;
 
     .input-item {
